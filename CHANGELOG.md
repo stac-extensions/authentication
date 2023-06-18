@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Initial commit of README.md
+- Added secure asset item.json and collection.json examples
+- Updated schema.json
 
 ### Changed
 
@@ -16,4 +19,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-[Unreleased]: <https://github.com/stac-extensions/template/compare/v1.0.0...HEAD>
+[Unreleased]: <https://github.com/stac-extensions/secure-assets/compare/v1.0.0...HEAD>

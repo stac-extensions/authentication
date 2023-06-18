@@ -37,7 +37,7 @@ The fields in the table below can be used in these parts of STAC documents:
 
 ### Additional Field Information
 
-#### sa:security
+#### security
 
 An Asset property used to specify a keyword that defines the security level of the Asset.The most common values may be "private" or "public".
  However, other keyword may be used to for alternative methods or levels of security.
@@ -50,7 +50,7 @@ An Asset with the Secure Assets extension will have the following fields
 | ----------- | ------ | ----------- |
 | href           | string | **REQUIRED**. URI to the asset. Relative and abolsolute URI are both allowed |
 | title           | string | The displayed title for clients and users. |
-| security           | string | Keyword for asset security level |
+| sa:security           | string | Keyword for asset security level |
 
 ## Contributing
 

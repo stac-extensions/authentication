@@ -2,7 +2,7 @@
   "stac_version": "1.0.0",
   "stac_extensions": [
     "https://stac-extensions.github.io/item-assets/v1.0.0/schema.json",
-    "https://stac-extensions.github.io/template/v1.0.0/schema.json"
+    "https://github.com/AtomicMaps/secure-assets/blob/main/json-schema/schema.json"
   ],
   "type": "Collection",
   "id": "collection",
@@ -29,29 +29,25 @@
       ]
     }
   },
-  "template:new_field": "test",
-  "template:xyz": {
-    "x": 1,
-    "y": 2,
-    "z": 3
-  },
-  "template:another_one": [
-    1,
-    2,
-    3
-  ],
   "assets": {
     "example": {
       "href": "https://example.com/examples/file.xyz",
-      "template:new_field": "test"
+      "title": "Secure Collection Asset Example",
+      "type": "application/vnd.example",
+      "roles": [
+        "data"
+      ],
+      "sa:security": "private"
     }
   },
   "item_assets": {
     "data": {
+      "title": "Secure Collection Asset Example",
+      "type": "application/vnd.example",
       "roles": [
         "data"
       ],
-      "template:new_field": "test"
+      "sa:security": "private"
     }
   },
   "summaries": {
