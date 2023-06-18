@@ -1,14 +1,20 @@
-# Template Extension Specification
+# Secure Assets Extension Specification
 
-- **Title:** Template
-- **Identifier:** <https://stac-extensions.github.io/template/v1.0.0/schema.json>
-- **Field Name Prefix:** template
-- **Scope:** Item, Collection
+- **Title:** Secure Assets
+- **Identifier:** <https://stac-extensions.github.io/secure-assets/v1.0.0/schema.json>
+- **Field Name Prefix:** -
+- **Scope:** Asset
 - **Extension [Maturity Classification](https://github.com/radiantearth/stac-spec/tree/master/extensions/README.md#extension-maturity):** Proposal
-- **Owner**: @your-gh-handles @person2
+- **Owner**: @jamesfisher-gis
 
-This document explains the Template Extension to the [SpatioTemporal Asset Catalog](https://github.com/radiantearth/stac-spec) (STAC) specification.
-This is the place to add a short introduction.
+The Secure Assets extension to the [STAC](https://github.com/radiantearth/stac-spec) specification provides a standard way to specify if an asset 
+resides in secure storage. An alternative method (i.e. presigned URLs) would be required to access these assets. Presigned URL generation would 
+require calling out to an external API. The aim of the Secure Assets extension is to provide a standard field for clients to recognise secure assets
+ and access them via the user's preferred method. 
+
+The Secure Assets extension is similar to the 
+[Alternative Assets extension](https://github.com/stac-extensions/alternate-assets/tree/main#alternate-asset-object) which aims to specify alternate 
+locations (e.g., URLs) for assets. Secure Assets aims to specify if an alternative dynamic method (presigned URLs) is needed.
 
 - Examples:
   - [Item example](examples/item.json): Shows the basic usage of the extension in a STAC Item
@@ -20,41 +26,31 @@ This is the place to add a short introduction.
 
 The fields in the table below can be used in these parts of STAC documents:
 - [ ] Catalogs
-- [x] Collections
-- [x] Item Properties (incl. Summaries in Collections)
+- [ ] Collections
+- [ ] Item Properties (incl. Summaries in Collections)
 - [x] Assets (for both Collections and Items, incl. Item Asset Definitions in Collections)
 - [ ] Links
 
 | Field Name           | Type                      | Description |
 | -------------------- | ------------------------- | ----------- |
-| template:new_field   | string                    | **REQUIRED**. Describe the required field... |
-| template:xyz         | [XYZ Object](#xyz-object) | Describe the field... |
-| template:another_one | \[number]                 | Describe the field... |
+| sa:security   | Map<string, [SecureAsset Object](#secure-asset-object)>  | Keyword for asset security level.  |
 
 ### Additional Field Information
 
-#### template:new_field
+#### sa:security
 
-This is a much more detailed description of the field `template:new_field`...
+An Asset property used to specify a keyword that defines the security level of the Asset.The most common values may be "private" or "public".
+ However, other keyword may be used to for alternative methods or levels of security.
 
-### XYZ Object
+### Secure Asset Object
 
-This is the introduction for the purpose and the content of the XYZ Object...
+An Asset with the Secure Assets extension will have the following fields
 
 | Field Name  | Type   | Description |
 | ----------- | ------ | ----------- |
-| x           | number | **REQUIRED**. Describe the required field... |
-| y           | number | **REQUIRED**. Describe the required field... |
-| z           | number | **REQUIRED**. Describe the required field... |
-
-## Relation types
-
-The following types should be used as applicable `rel` types in the
-[Link Object](https://github.com/radiantearth/stac-spec/tree/master/item-spec/item-spec.md#link-object).
-
-| Type                | Description |
-| ------------------- | ----------- |
-| fancy-rel-type      | This link points to a fancy resource. |
+| href           | string | **REQUIRED**. URI to the asset. Relative and abolsolute URI are both allowed |
+| title           | string | The displayed title for clients and users. |
+| security           | string | Keyword for asset security level |
 
 ## Contributing
 
