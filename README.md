@@ -33,7 +33,7 @@ The fields in the table below can be used in these parts of STAC documents:
 
 | Field Name           | Type                      | Description |
 | -------------------- | ------------------------- | ----------- |
-| sa:security   | Map<string, [SecureAsset Object](#secure-asset-object)>  | Keyword for asset security level.  |
+| security   | Map<string, [SecureAsset Object](#secure-asset-object)>  | Object that desribes the authenticated scheme and href |
 
 ### Additional Field Information
 
@@ -48,9 +48,108 @@ An Asset with the Secure Assets extension will have the following fields
 
 | Field Name  | Type   | Description |
 | ----------- | ------ | ----------- |
-| href           | string | **REQUIRED**. URI to the asset. Relative and abolsolute URI are both allowed |
-| title           | string | The displayed title for clients and users. |
-| sa:security           | string | Keyword for asset security level |
+| scheme           | string | **REQUIRED**. The authentification scheme used to access the data (`HttpClient` \| `S3Client` \| `PlanetaryComputerClient` \| `EarthdataClient` \| `SignedUrlClient`). |
+| description | string | Additional instructions for authentification |
+
+### Schemes
+
+The authentification schemes align with the relevant clients included in the [stac-asset](https://github.com/stac-utils/stac-asset) library.
+
+| Name | Description
+| -- | -- |
+| `HttpClient` | Simple HTTP client without any authentication |
+| `S3Client` | Simple S3 client 
+| `PlanetaryComputerClient` | Signs URLs with the [Planetary Computer Authentication API](https://planetarycomputer.microsoft.com/docs/reference/sas/) 
+| `EarthdataClient` | Uses a token-based authentication to download data, from _some_ Earthdata providers, e.g. DAACs
+| `SignedUrlClient` | Signs URLs with a user-defined Authentification API
+
+### URL Signing
+
+The `SignedUrlClient` scheme indicates that authentification will be handled by an API which generates and returns a signed URL. For example, a signed URL for assets in AWS S3 can be generated with the following Lambda function code.
+
+```python
+  import boto3
+  from botocore.client import Config
+  import os
+  import json
+
+  def lambda_handler(event, context):
+      try:
+          s3Client = boto3.client("s3")
+      except Exception as e:
+          return {
+              "statusCode": 400,
+              "body": json.dumps({
+                  "error": (e)
+                  })
+          }
+
+      body = json.loads(event["body"])
+      key = body["key"]
+      bucketName = body["bucket"]
+
+      try:
+          URL = s3Client.generate_presigned_url(
+              "get_object",
+              Params = {"Bucket": bucketName, "Key":key},
+              ExpiresIn = 360
+              )
+          
+          return ({
+              "statusCode": 200,
+              "body": json.dumps({
+                  "signed_url": URL
+              }),
+              "headers":{
+                  "Access-Control-Allow-Origin": "*",
+                  "Access-Control-Allow-Headers": "*"
+              }
+              
+          })
+      except Exception as e:
+          return {
+              "statusCode": 400,
+              "body": json.dumps({
+                  "error": (e)
+                  })
+          }
+```
+Where the response looks like
+
+```json
+  {
+    "signed_url": "https://<bucket>.s3.<region>.amazonaws.com/<key>?AWSAccessKeyId=<aws access key>&Signature=<signature>&x-amz-security-token=<auth token>&Expires=<epoch expiration time>"
+  }
+```
+
+The authentication API can be called clientside using an AWS S3 href (`https://<bucket>.s3.<region>.amazonaws.com/<key>`) with the following code snippet.
+
+```javascript
+  let signed_url
+  const auth_api = "";
+
+  function createSignedRequestBody(href) {
+    const bucket = href.split(".")[0].split("//")[1];
+    const key = href.split("/").slice(3).join("/").replace(/\+/g, " ");
+    return {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ bucket: bucket, key: key }),
+      redirect: "follow",
+    };
+  };
+
+  Promise(
+    fetch(auth_api, createSignedRequestBody(href))
+      .then((resp) => resp.json())
+      .then((respJson) => {
+        signed_url = respJson.signed_url;
+      })
+  );
+```
 
 ## Contributing
 

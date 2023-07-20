@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://stac-extensions.github.io/secure-assets/v1.0.0/schema.json#",
   "title": "Secure Assets Extension",
-  "description": "STAC Secure Assets Extension for STAC Items and STAC Collections.",
+  "description": "Secure Assets STAC Extension for STAC Items and STAC Collections.",
   "oneOf": [
     {
       "$comment": "This is the schema for STAC Items.",
@@ -14,6 +14,7 @@
           "type": "object",
           "required": [
             "type",
+            "properties",
             "assets"
           ],
           "properties": {
@@ -24,7 +25,7 @@
               "$comment": "This validates the fields in Item Assets, but does not require them.",
               "type": "object",
               "additionalProperties": {
-                "$ref": "#/definitions/fields"
+                "$ref": "#/definitions/secure_asset"
               }
             }
           }
@@ -63,7 +64,10 @@
                   "not": {
                     "allOf": [
                       {
-                        "$ref": "#/definitions/fields"
+                        "$ref": "#/definitions/require_any_field"
+                      },
+                      {
+                        "$ref": "#/definitions/secure_asset"
                       }
                     ]
                   }
@@ -85,12 +89,26 @@
                   "not": {
                     "allOf": [
                       {
-                        "$ref": "#/definitions/fields"
+                        "$ref": "#/definitions/require_any_field"
+                      },
+                      {
+                        "$ref": "#/definitions/secure_asset"
                       }
                     ]
                   }
                 }
               }
+            }
+          }
+        },
+        {
+          "$comment": "This is the schema for the fields in Summaries. By default, only checks the existence of the properties, but not the schema of the summaries.",
+          "required": [
+            "summaries"
+          ],
+          "properties": {
+            "summaries": {
+              "$ref": "#/definitions/require_any_field"
             }
           }
         }
@@ -115,21 +133,25 @@
     "require_any_field": {
       "$comment": "Please list all fields here so that we can force the existence of one of them in other parts of the schemas.",
       "anyOf": [
-        {"required": ["sa:security"]}
+        {"required": ["security", "secure_asset:scheme"]}
       ]
     },
-    "fields": {
+    "secure_asset": {
       "$comment": "Add your new fields here. Don't require them here, do that above in the corresponding schema.",
       "type": "object",
       "properties": {
-        "sa:security": {
-          "type": "string"
+        "security": {
+          "type": "object",
+          "properties": {
+            "scheme": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          }
         }
-      },
-      "patternProperties": {
-        "^(?!sa:)": {}
-      },
-      "additionalProperties": false
+      }
     }
   }
 }
