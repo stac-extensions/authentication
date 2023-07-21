@@ -57,10 +57,6 @@
     "datetime": {
       "minimum": "2015-06-23T00:00:00Z",
       "maximum": "2019-07-10T13:44:56Z"
-    },
-    "security": {
-      "scheme": ["SignedUrlClient"],
-      "description": ["Requires an authentification API"]
     }
   },
   "links": [

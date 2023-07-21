@@ -24,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+- Removed summaries example
+
 ### Fixed
 
 [Unreleased]: <https://github.com/stac-extensions/secure-assets/compare/v1.0.0...HEAD>
