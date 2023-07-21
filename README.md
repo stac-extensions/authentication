@@ -59,7 +59,7 @@ The available authentification schemes align with relevant clients included in t
 | `HttpClient`              | Simple HTTP client without any authentication                                                                            |
 | `S3Client`                | Simple S3 client                                                                                                         |
 | `PlanetaryComputerClient` | Signs URLs with the [Planetary Computer Authentication API](https://planetarycomputer.microsoft.com/docs/reference/sas/) |
-| `EarthdataClient`         | Uses a token-based authentication to download data, from _some_ Earthdata providers, e.g. DAACs                          |
+| `EarthdataClient`         | Uses a token-based authentication to download data, from *some* Earthdata providers, e.g. DAACs                          |
 | `SignedUrlClient`         | Signs URLs with a user-defined Authentification API                                                                      |
 
 ### URL Signing
