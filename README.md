@@ -11,9 +11,9 @@ The Secure Assets extension to the [STAC](https://github.com/radiantearth/stac-s
 scheme is needed to access an asset in secured storage. The aim of the Secure Assets extension is to provide a standard field for clients to 
 recognise secure assets and access them via the specified authentification scheme.
 
-The Secure Assets extension aligns with the [stac-asset](https://github.com/stac-utils/stac-asset) which has support for several 
-[authentification clients](https://github.com/stac-utils/stac-asset#clients). A `SignedUrlClient` scheme may be specified that uses a custom API to 
-generate signed URLs. See the [Signed URL](#url-signing) section for an example Lambda function.
+The Secure Assets extension aligns with the [stac-asset](https://github.com/stac-utils/stac-asset) library, which has support for several 
+[authentification clients](https://github.com/stac-utils/stac-asset#clients). A `SignedUrlClient` scheme can be specified that would a user-defined 
+API to generate signed URLs. See the [Signed URL](#url-signing) section for an example Lambda function.
 
 - Examples:
   - [Item example](examples/item.json): Shows the basic usage of the extension in a STAC Item
@@ -39,12 +39,11 @@ The fields in the table below can be used in these parts of STAC documents:
 
 #### security
 
-An Asset property used to specify a keyword that defines the security level of the Asset.The most common values may be "private" or "public".
-However, other keyword may be used to for alternative methods or levels of security.
+An Asset property used to specify a keyword that defines the authentification scheme of the Asset and provide a description of how to authenticate.
 
 ### Secure Asset Object
 
-An Asset with the Secure Assets extension will have the following fields
+An Asset with the Secure Assets extension will have a "security" object with the following fields
 
 | Field Name  | Type   | Description                                                                                                                                                            |
 | ----------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -53,7 +52,7 @@ An Asset with the Secure Assets extension will have the following fields
 
 ### Schemes
 
-The authentification schemes align with the relevant clients included in the [stac-asset](https://github.com/stac-utils/stac-asset) library.
+The available authentification schemes align with relevant clients included in the [stac-asset](https://github.com/stac-utils/stac-asset) library.
 
 | Name                      | Description                                                                                                              |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
@@ -65,8 +64,8 @@ The authentification schemes align with the relevant clients included in the [st
 
 ### URL Signing
 
-The `SignedUrlClient` scheme indicates that authentification will be handled by an API which generates and returns a signed URL. For example, 
-a signed URL for assets in AWS S3 can be generated with the following Lambda function code.
+The `SignedUrlClient` scheme indicates that authentification will be handled by an API, which generates and returns a signed URL. For example, 
+a signed URL for an asset in AWS S3 can be generated with the following Lambda function code.
 
 ```python
   import boto3
@@ -124,7 +123,7 @@ Where the response looks like
 }
 ```
 
-The authentication API can be called clientside using an AWS S3 href (`https://<bucket>.s3.<region>.amazonaws.com/<key>`) with the following code 
+The authentication API can be called clientside base on an AWS S3 href (`https://<bucket>.s3.<region>.amazonaws.com/<key>`) with the following code 
 snippet.
 
 ```javascript

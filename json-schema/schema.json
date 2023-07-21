@@ -144,7 +144,10 @@
           "type": "object",
           "properties": {
             "scheme": {
-              "type": "string"
+              "type": "string",
+              "oneOf": [
+                {"enum": ["HttpClient", "S3Client", "PlanetaryComputerClient", "EarthdataClient", "SignedUrlClient"]}
+              ]
             },
             "description": {
               "type": "string"

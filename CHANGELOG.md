@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated README.md descriptions of the library
 
+- Updated schema to secure_asset:schema to limit string values to the list of client names.
+
 ### Deprecated
 
 ### Removed
