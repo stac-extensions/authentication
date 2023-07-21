@@ -12,6 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated schema.json
 
 ### Changed
+- README.md updates
+- Updated secure asset item.json and collection.json to handle multiple authentification schemes
+- Updated schema.json for the updated security object structure
+
+- Updated README.md descriptions of the library
+
+- Updated schema to secure_asset:schema to limit string values to the list of client names.
 
 ### Deprecated
 

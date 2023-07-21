@@ -1,7 +1,7 @@
 {
   "stac_version": "1.0.0",
   "stac_extensions": [
-    "https://github.com/AtomicMaps/secure-assets/blob/main/json-schema/schema.json"
+    "https://stac-extensions.github.io/secure-assets/v1.1.0/schema.json"
   ],
   "type": "Feature",
   "id": "item",
@@ -55,7 +55,10 @@
       "roles": [
         "data"
       ],
-      "sa:security": "private"
+      "security": {
+        "scheme": "EarthdataClient",
+        "description": "Requires a Personal Access Token"
+      }
     }
   }
 }

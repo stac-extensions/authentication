@@ -2,7 +2,7 @@
   "stac_version": "1.0.0",
   "stac_extensions": [
     "https://stac-extensions.github.io/item-assets/v1.0.0/schema.json",
-    "https://github.com/AtomicMaps/secure-assets/blob/main/json-schema/schema.json"
+    "https://stac-extensions.github.io/secure-assets/v1.1.0/schema.json"
   ],
   "type": "Collection",
   "id": "collection",
@@ -47,13 +47,20 @@
       "roles": [
         "data"
       ],
-      "sa:security": "private"
+      "security": {
+        "scheme": "SignedUrlClient",
+        "description": "Requires an authentification API"
+      }
     }
   },
   "summaries": {
     "datetime": {
       "minimum": "2015-06-23T00:00:00Z",
       "maximum": "2019-07-10T13:44:56Z"
+    },
+    "security": {
+      "scheme": ["SignedUrlClient"],
+      "description": ["Requires an authentification API"]
     }
   },
   "links": [
