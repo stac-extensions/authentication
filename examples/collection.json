@@ -29,6 +29,30 @@
       ]
     }
   },
+  "security:schemes": {
+    "oauth": {
+        "type": "oauth2",
+        "description": "requires a login and user token",
+        "flows": {
+               "authorizationUrl": "https://example.com/oauth/authorize",
+               "tokenUrl": "https://example.com/oauth/token",
+               "scopes": {
+                "read:example": "Read the example data",
+                "write:example": "Write the example data",
+                "admin:example": "Read/write/delete the example data"
+              }
+        }
+    },
+    "signedUrl": {
+      "type": "signedUrl",
+      "description": "Requires an authentication API",
+      "flows": {
+        "signedUrl": {
+          "authorizationApi": "https://example.com/signedUrl/authorize"
+        }
+      }
+    }
+  },
   "assets": {
     "example": {
       "href": "https://example.com/examples/file.xyz",
@@ -37,7 +61,9 @@
       "roles": [
         "data"
       ],
-      "sa:security": "private"
+      "security:refs": [
+        "signedUrl"
+      ]
     }
   },
   "item_assets": {
@@ -47,17 +73,22 @@
       "roles": [
         "data"
       ],
-      "security": {
-        "scheme": "SignedUrlClient",
-        "description": "Requires an authentification API"
-      }
+      "security:refs": [
+        "oauth"
+      ]
     }
   },
   "summaries": {
     "datetime": {
       "minimum": "2015-06-23T00:00:00Z",
       "maximum": "2019-07-10T13:44:56Z"
-    }
+    },
+    "security:schemes": [
+      "none",
+      "oauth",
+      "s3",
+      "SignedUrl"
+    ]
   },
   "links": [
     {

@@ -39,7 +39,28 @@
     ]
   },
   "properties": {
-    "datetime": "2020-12-11T22:38:32Z"
+    "datetime": "2020-12-11T22:38:32Z",
+    "security:schemes": {
+      "oauth": {
+          "type": "oauth2",
+          "description": "requires a login and user token",
+          "flows": {
+                 "authorizationUrl": "https://example.com/oauth/authorize",
+                 "tokenUrl": "https://example.com/oauth/token",
+              "scopes": {
+                "read:example": "Read the example data",
+                "write:example": "Write the example data",
+                "admin:example": "Read/write/delete the example data"
+              }
+          }
+      },
+     "none": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "Free access without restrictions",
+       "flows": {}
+      }
+    }
   },
   "links": [
     {
@@ -55,10 +76,9 @@
       "roles": [
         "data"
       ],
-      "security": {
-        "scheme": "EarthdataClient",
-        "description": "Requires a Personal Access Token"
-      }
+      "security:refs": [
+        "oauth2"
+      ]
     }
   }
 }

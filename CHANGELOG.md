@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated schema.json
 
 ### Changed
+
+- README.md updates for OpenAPI
+- Updated secure asset item.json and collection.json for OpenAPI
+- Updated schema.json for for OpenAPI
+
 - README.md updates
 - Updated secure asset item.json and collection.json to handle multiple authentification schemes
 - Updated schema.json for the updated security object structure
