@@ -2,7 +2,7 @@
 
 - **Title:** Secure Assets
 - **Identifier:** <https://stac-extensions.github.io/secure-assets/v1.0.0/schema.json>
-- **Field Name Prefix:** -
+- **Field Name Prefix:** security
 - **Scope:** Asset
 - **Extension [Maturity Classification](https://github.com/radiantearth/stac-spec/tree/master/extensions/README.md#extension-maturity):** Proposal
 - **Owner**: @jamesfisher-gis
@@ -31,8 +31,8 @@ The fields in the table below can be used in these parts of STAC documents:
 
 | Field Name | Type                                                    | Description                                            |
 | ---------- | ------------------------------------------------------- | ------------------------------------------------------ |
-| security:schemes   | Map<string, [SecureAssetSchemeObject](#secure-asset-scheme-object)> | Object that defines all of the authentication schemes included in the Assets |
-| security:refs   |   [string]    |   List of relevant security:schema keys for an asset   |
+| security:schemes   | Map<string, [SecureAssetSchemeObject](#secure-asset-scheme-object)> | A property that contains all of the [scheme definitions](#secure-asset-scheme-object) used by Assets in the STAC Item or Collection. |
+| security:refs   |   [string]    |   An Asset property that specifies which schemes in `security:schemes` may be used to access an Asset.   |
 
 ### Scheme Types
 
@@ -49,19 +49,9 @@ The available authentication schemes align with relevant clients included in the
 | `apiKey`                  | Description of [API key](https://swagger.io/docs/specification/authentication/api-keys/) authentication included in request headers, query parameters, or cookies.                                                                                                                                               |
 | `openIdConnect`           | Description of [OpenID Connect Discovery](https://swagger.io/docs/specification/authentication/openid-connect-discovery/) authentication     
 
-### Additional Field Information
-
-### security:schemes
-
-- An Item or Collection property that contains all of the [SecureAssetSchemeObject](#secure-asset-scheme-object) used by Assets in the STAC Item or Collection.
-
-### security:refs
-
-- An Asset property that specifies which schemes in `security:schemes` are required to access the Asset.
-
 ### Secure Asset Scheme Object
 
-A description of the authentication scheme with parameters for how to perform authentication. The Secure Asset Scheme follows the [OpenAPI security spec](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#security-scheme-object) for support of OAuth2.0, API Key, and OpenID authentication. All the [authentication clients](https://github.com/stac-utils/stac-asset#clients) included in the [stac-asset](https://github.com/stac-utils/stac-asset) library can be described, as well as a custom signed URL authentication scheme.
+The Secure Asset Scheme aligns with the [OpenAPI security spec](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#security-scheme-object) for support of OAuth2.0, API Key, and OpenID authentication. All the [authentication clients](https://github.com/stac-utils/stac-asset#clients) included in the [stac-asset](https://github.com/stac-utils/stac-asset) library can be described, as well as a custom signed URL authentication scheme.
 
 | Field Name  | Type   | Description                                                                                                                                         |
 | ----------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -70,7 +60,7 @@ A description of the authentication scheme with parameters for how to perform au
 | name | string | Required for `type: apiKey`. The name of the header, query, or cookie parameter to be used.                                                                 |
 | in | string | Required for `type: apiKey`. The location of the API key (`query` \| `header` \| `cookie`).                                                                  |
 | scheme | string | Required for `type: http`. The name of the HTTP Authorization scheme to be used in the [Authorization header as defined in RFC7235](https://tools.ietf.org/html/rfc7235#section-5.1).  The values used SHOULD be registered in the [IANA Authentication Scheme registry](https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml). (`basic` \| `bearer`)                                                                   |
-| flows | Map<string, [SecureAssetFlowsObject](#secure-asset-flows-object)> | Required for `type: oauth2`. Scenarios an API client performs to get an access token from the authorization server (`authorizationCode` \| `implicit` \| `password ` \| `clientCredentials` \| `signedUrl`)  |
+| flows | Map<string, [SecureAssetFlowsObject](#secure-asset-flows-object)> | Required for `type: oauth2` and `type: signedUrl`. Scenarios an API client performs to get an access token from the authorization server (`authorizationCode` \| `implicit` \| `password ` \| `clientCredentials` \| `signedUrl`)  |
 | openIdConnectUrl | string | Required for `type: openIdConnectUrl`. OpenId Connect URL to discover OAuth2 configuration values. This MUST be in the form of a URL.          |
 
 
@@ -97,7 +87,7 @@ The `signedUrl` scheme indicates that authentication will be handled by an API w
 {
   "security:schemes": {
     "signedUrl": {
-      "type": "SignedUrl",
+      "type": "signedUrl",
       "description": "Requires an authentication API",
       "flows": {
         "signedUrl": {

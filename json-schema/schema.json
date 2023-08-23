@@ -70,7 +70,7 @@
             {
               "$comment": "Require fields here for Collections (top-level).",
               "required": [
-                "security:schema"
+                "security:schemes"
               ]
             },
             {
@@ -163,14 +163,14 @@
     "require_any_field": {
       "$comment": "Please list all fields here so that we can force the existence of one of them in other parts of the schemas.",
       "anyOf": [
-        {"required": ["security:schemas"]}
+        {"required": ["security:schemes"]}
       ]
     },
     "fields": {
       "$comment": "Add your new fields here. Don't require them here, do that above in the corresponding schema.",
       "type": "object",
       "properties": {
-        "security:schemas": {
+        "security:schemes": {
           "type": "object",
           "properties": {
             "type": {
@@ -193,7 +193,10 @@
             },
             "name": {
               "title": "API Key header, query, or cookie parameter name",
-              "type": "string"
+              "type": "string",
+              "examples": [
+                "x-api-key"
+              ]
             },
             "in": {
               "title": "Location of the API Key",

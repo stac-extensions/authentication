@@ -87,7 +87,7 @@
       "none",
       "oauth",
       "s3",
-      "SignedUrl"
+      "signedUrl"
     ]
   },
   "links": [
