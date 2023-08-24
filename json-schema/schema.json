@@ -133,7 +133,12 @@
     "require_any_field": {
       "$comment": "Please list all fields here so that we can force the existence of one of them in other parts of the schemas.",
       "anyOf": [
-        {"required": ["security", "secure_asset:scheme"]}
+        {
+          "required": [
+            "security",
+            "secure_asset:scheme"
+          ]
+        }
       ]
     },
     "secure_asset": {
@@ -146,7 +151,15 @@
             "scheme": {
               "type": "string",
               "oneOf": [
-                {"enum": ["HttpClient", "S3Client", "PlanetaryComputerClient", "EarthdataClient", "SignedUrlClient"]}
+                {
+                  "enum": [
+                    "http",
+                    "s3",
+                    "planetary_computer",
+                    "earthdata",
+                    "signed_url"
+                  ]
+                }
               ]
             },
             "description": {

@@ -7,12 +7,12 @@
 - **Extension [Maturity Classification](https://github.com/radiantearth/stac-spec/tree/master/extensions/README.md#extension-maturity):** Proposal
 - **Owner**: @jamesfisher-gis
 
-The Secure Assets extension to the [STAC](https://github.com/radiantearth/stac-spec) specification provides a way to specify what authentication 
-scheme is needed to access an asset in secured storage. The aim of the Secure Assets extension is to provide a standard field for clients to 
+The Secure Assets extension to the [STAC](https://github.com/radiantearth/stac-spec) specification provides a way to specify what authentication
+scheme is needed to access an asset in secured storage. The aim of the Secure Assets extension is to provide a standard field for clients to
 recognise secure assets and access them via the specified authentication scheme.
 
-The Secure Assets extension aligns with the [stac-asset](https://github.com/stac-utils/stac-asset) library, which has support for several 
-[authentication clients](https://github.com/stac-utils/stac-asset#clients). A `SignedUrlClient` scheme can be specified that would a user-defined 
+The Secure Assets extension aligns with the [stac-asset](https://github.com/stac-utils/stac-asset) library, which has support for several
+[authentication clients](https://github.com/stac-utils/stac-asset#clients). A `signed_url` scheme can be specified that would a user-defined
 API to generate signed URLs. See the [Signed URL](#url-signing) section for an example Lambda function.
 
 - Examples:
@@ -47,7 +47,7 @@ An Asset with the Secure Assets extension will have a "security" object with the
 
 | Field Name  | Type   | Description                                                                                                                                                            |
 | ----------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| scheme      | string | **REQUIRED**. The authentication scheme used to access the data (`HttpClient` \| `S3Client` \| `PlanetaryComputerClient` \| `EarthdataClient` \| `SignedUrlClient`). |
+| scheme      | string | **REQUIRED**. The authentication scheme used to access the data (`http` \| `s3` \| `planetary_computer` \| `earthdata` \| `signed_url`). |
 | description | string | Additional instructions for authentication                                                                                                                           |
 
 ### Schemes
@@ -56,15 +56,15 @@ The available authentication schemes align with relevant clients included in the
 
 | Name                      | Description                                                                                                              |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `HttpClient`              | Simple HTTP client without any authentication                                                                            |
-| `S3Client`                | Simple S3 client                                                                                                         |
-| `PlanetaryComputerClient` | Signs URLs with the [Planetary Computer Authentication API](https://planetarycomputer.microsoft.com/docs/reference/sas/) |
-| `EarthdataClient`         | Uses a token-based authentication to download data, from *some* Earthdata providers, e.g. DAACs                          |
-| `SignedUrlClient`         | Signs URLs with a user-defined authentication API                                                                      |
+| `http`              | Simple HTTP client without any authentication                                                                            |
+| `s3`                | Simple S3 client                                                                                                         |
+| `planetary_computer` | Signs URLs with the [Planetary Computer Authentication API](https://planetarycomputer.microsoft.com/docs/reference/sas/) |
+| `earthdata`         | Uses a token-based authentication to download data, from *some* Earthdata providers, e.g. DAACs                          |
+| `signed_url`         | Signs URLs with a user-defined authentication API                                                                      |
 
 ### URL Signing
 
-The `SignedUrlClient` scheme indicates that authentication will be handled by an API, which generates and returns a signed URL. For example, 
+The `signed_url` scheme indicates that authentication will be handled by an API, which generates and returns a signed URL. For example,
 a signed URL for an asset in AWS S3 can be generated with the following Lambda function code.
 
 ```python
@@ -123,7 +123,7 @@ Where the response looks like
 }
 ```
 
-The authentication API can be called clientside base on an AWS S3 href (`https://<bucket>.s3.<region>.amazonaws.com/<key>`) with the following code 
+The authentication API can be called clientside base on an AWS S3 href (`https://<bucket>.s3.<region>.amazonaws.com/<key>`) with the following code
 snippet.
 
 ```javascript

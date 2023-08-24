@@ -48,8 +48,8 @@
         "data"
       ],
       "security": {
-        "scheme": "SignedUrlClient",
-        "description": "Requires an authentification API"
+        "scheme": "signed_url",
+        "description": "Requires an authentication API"
       }
     }
   },
