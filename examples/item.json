@@ -1,7 +1,7 @@
 {
   "stac_version": "1.0.0",
   "stac_extensions": [
-    "https://stac-extensions.github.io/secure-assets/v1.1.0/schema.json"
+    "https://stac-extensions.github.io/secure-assets/v1.0.0/schema.json"
   ],
   "type": "Feature",
   "id": "item",
@@ -42,23 +42,23 @@
     "datetime": "2020-12-11T22:38:32Z",
     "security:schemes": {
       "oauth": {
-          "type": "oauth2",
-          "description": "requires a login and user token",
-          "flows": {
-                 "authorizationUrl": "https://example.com/oauth/authorize",
-                 "tokenUrl": "https://example.com/oauth/token",
-              "scopes": {
-                "read:example": "Read the example data",
-                "write:example": "Write the example data",
-                "admin:example": "Read/write/delete the example data"
-              }
+        "type": "oauth2",
+        "description": "requires a login and user token",
+        "flows": {
+          "authorizationUrl": "https://example.com/oauth/authorize",
+          "tokenUrl": "https://example.com/oauth/token",
+          "scopes": {
+            "read:example": "Read the example data",
+            "write:example": "Write the example data",
+            "admin:example": "Read/write/delete the example data"
           }
+        }
       },
-     "none": {
+      "none": {
         "type": "http",
         "scheme": "basic",
         "description": "Free access without restrictions",
-       "flows": {}
+        "flows": {}
       }
     }
   },

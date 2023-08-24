@@ -5,7 +5,7 @@
   "description": "STAC Secure Assets Extension for STAC Items and STAC Collections.",
   "oneOf": [
     {
-      "$comment": "This is the schema for STAC Items. Remove this object if this extension only applies to Collections.",
+      "$comment": "This is the schema for STAC Items.",
       "allOf": [
         {
           "$ref": "#/definitions/stac_extensions"
@@ -65,7 +65,7 @@
       ],
       "anyOf": [
         {
-          "$comment": "This is the schema for the top-level fields in a Collection. Remove this if this extension does not define top-level fields for Collections.",
+          "$comment": "This is the schema for the top-level fields in a Collection.",
           "allOf": [
             {
               "$comment": "Require fields here for Collections (top-level).",
@@ -141,9 +141,6 @@
         }
       ]
     }
-
-
-
   ],
   "definitions": {
     "stac_extensions": {
@@ -163,7 +160,11 @@
     "require_any_field": {
       "$comment": "Please list all fields here so that we can force the existence of one of them in other parts of the schemas.",
       "anyOf": [
-        {"required": ["security:schemes"]}
+        {
+          "required": [
+            "security:schemes"
+          ]
+        }
       ]
     },
     "fields": {
@@ -179,12 +180,12 @@
               "examples": [
                 "http",
                 "s3",
-                "planetaryComputer",
+                "planetary_computer",
                 "earthdata",
-                "signedUrl",
+                "signed_url",
                 "oauth2",
-                "apiKey",
-                "openIdConnect"
+                "api_key",
+                "open_id_connect"
               ]
             },
             "description": {
@@ -219,19 +220,19 @@
               "title": "Scenarios an API client performs to get an access token from the authorization server",
               "type": "object",
               "properties": {
-                "authorizationUrl": {
+                "authorization_url": {
                   "title": "The authorization URL to be used",
                   "type": "string"
                 },
-                "tokenUrl": {
+                "token_url": {
                   "title": "The token URL to be used",
                   "type": "string"
                 },
-                "authorizationApi": {
+                "authorization_api": {
                   "title": "The signed URL API endpoint to be used",
                   "type": "string"
                 },
-                "refreshUrl": {
+                "refresh_url": {
                   "title": "The URL to be used for obtaining refresh tokens",
                   "type": "string"
                 },
@@ -241,15 +242,15 @@
                 }
               },
               "examples": [
-                "authorizationCode",
-                "implicit", 
+                "authorization_code",
+                "implicit",
                 "password",
-                "clientCredentials",
-                "signedUrl"
+                "client_credentials",
+                "signed_url"
               ]
             },
-            "openConnectUrl": {
-              "title": "Scenarios an API client performs to get an access token from the authorization server",
+            "open_connect_url": {
+              "title": "This URL returns a JSON listing of the OpenID/OAuth endpoints, supported scopes and claims, public keys used to sign the tokens, and other details",
               "type": "object"
             }
           }
@@ -262,9 +263,7 @@
         }
       },
       "patternProperties": {
-        "^(?!security:)": {
-          "$comment": "Above, change `template` to the prefix of this extension"
-        }
+        "^(?!security:)": {}
       },
       "additionalProperties": false
     }
