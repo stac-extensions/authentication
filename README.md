@@ -40,7 +40,8 @@ The fields in the table below can be used in these parts of STAC documents:
 ### Scheme Types
 
 The Secure Assets extension can be used to define relevant clients included in the [stac-asset](https://github.com/stac-utils/stac-asset) library and 
-in the [OpenAPI spec](https://swagger.io/docs/specification/authentication/). The `type` value is not restircted to the following values, so a practitioner may define a custom authentication scheme not included in the scheme types below.
+in the [OpenAPI spec](https://swagger.io/docs/specification/authentication/). The `type` value is not restircted to the following values, so a 
+practitioner may define a custom authentication scheme not included in the scheme types below.
 
 | Name                      | Description                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------- |
