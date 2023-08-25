@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://stac-extensions.github.io/secure-assets/v1.0.0/schema.json#",
   "title": "Secure Assets Extension",
-  "description": "Secure Assets STAC Extension for STAC Items and STAC Collections.",
+  "description": "STAC Secure Assets Extension for STAC Items and STAC Collections.",
   "oneOf": [
     {
       "$comment": "This is the schema for STAC Items.",
@@ -21,11 +21,24 @@
             "type": {
               "const": "Feature"
             },
+            "properties": {
+              "allOf": [
+                {
+                  "$comment": "Require fields here for Item Properties.",
+                  "required": [
+                    "security:schemes"
+                  ]
+                },
+                {
+                  "$ref": "#/definitions/fields"
+                }
+              ]
+            },
             "assets": {
               "$comment": "This validates the fields in Item Assets, but does not require them.",
               "type": "object",
               "additionalProperties": {
-                "$ref": "#/definitions/secure_asset"
+                "$ref": "#/definitions/fields"
               }
             }
           }
@@ -52,6 +65,20 @@
       ],
       "anyOf": [
         {
+          "$comment": "This is the schema for the top-level fields in a Collection.",
+          "allOf": [
+            {
+              "$comment": "Require fields here for Collections (top-level).",
+              "required": [
+                "security:schemes"
+              ]
+            },
+            {
+              "$ref": "#/definitions/fields"
+            }
+          ]
+        },
+        {
           "$comment": "This validates the fields in Collection Assets, but does not require them.",
           "required": [
             "assets"
@@ -67,7 +94,7 @@
                         "$ref": "#/definitions/require_any_field"
                       },
                       {
-                        "$ref": "#/definitions/secure_asset"
+                        "$ref": "#/definitions/fields"
                       }
                     ]
                   }
@@ -92,7 +119,7 @@
                         "$ref": "#/definitions/require_any_field"
                       },
                       {
-                        "$ref": "#/definitions/secure_asset"
+                        "$ref": "#/definitions/fields"
                       }
                     ]
                   }
@@ -133,28 +160,112 @@
     "require_any_field": {
       "$comment": "Please list all fields here so that we can force the existence of one of them in other parts of the schemas.",
       "anyOf": [
-        {"required": ["security", "secure_asset:scheme"]}
+        {
+          "required": [
+            "security:schemes"
+          ]
+        }
       ]
     },
-    "secure_asset": {
+    "fields": {
       "$comment": "Add your new fields here. Don't require them here, do that above in the corresponding schema.",
       "type": "object",
       "properties": {
-        "security": {
+        "security:schemes": {
           "type": "object",
           "properties": {
-            "scheme": {
+            "type": {
+              "title": "Scheme keyword",
               "type": "string",
-              "oneOf": [
-                {"enum": ["HttpClient", "S3Client", "PlanetaryComputerClient", "EarthdataClient", "SignedUrlClient"]}
+              "examples": [
+                "http",
+                "s3",
+                "planetary_computer",
+                "earthdata",
+                "signed_url",
+                "oauth2",
+                "api_key",
+                "open_id_connect"
               ]
             },
             "description": {
+              "title": "Authentication scheme description",
               "type": "string"
+            },
+            "name": {
+              "title": "API Key header, query, or cookie parameter name",
+              "type": "string",
+              "examples": [
+                "x-api-key"
+              ]
+            },
+            "in": {
+              "title": "Location of the API Key",
+              "type": "string",
+              "examples": [
+                "query",
+                "header",
+                "cookie"
+              ]
+            },
+            "scheme": {
+              "title": "Name of the http authentication scheme",
+              "type": "string",
+              "examples": [
+                "basic",
+                "bearer"
+              ]
+            },
+            "flows": {
+              "title": "Scenarios an API client performs to get an access token from the authorization server",
+              "type": "object",
+              "properties": {
+                "authorization_url": {
+                  "title": "The authorization URL to be used",
+                  "type": "string"
+                },
+                "token_url": {
+                  "title": "The token URL to be used",
+                  "type": "string"
+                },
+                "authorization_api": {
+                  "title": "The signed URL API endpoint to be used",
+                  "type": "string"
+                },
+                "refresh_url": {
+                  "title": "The URL to be used for obtaining refresh tokens",
+                  "type": "string"
+                },
+                "scopes": {
+                  "title": "The available scopes for the authentication scheme",
+                  "type": "object"
+                }
+              },
+              "examples": [
+                "authorization_code",
+                "implicit",
+                "password",
+                "client_credentials",
+                "signed_url"
+              ]
+            },
+            "open_connect_url": {
+              "title": "This URL returns a JSON listing of the OpenID/OAuth endpoints, supported scopes and claims, public keys used to sign the tokens, and other details",
+              "type": "object"
             }
           }
+        },
+        "security:refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
-      }
+      },
+      "patternProperties": {
+        "^(?!security:)": {}
+      },
+      "additionalProperties": false
     }
   }
 }
