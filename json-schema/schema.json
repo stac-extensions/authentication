@@ -180,12 +180,12 @@
               "examples": [
                 "http",
                 "s3",
-                "planetary_computer",
+                "planetaryComputer",
                 "earthdata",
-                "signed_url",
+                "signedUrl",
                 "oauth2",
-                "api_key",
-                "open_id_connect"
+                "apiKey",
+                "openIdConnect"
               ]
             },
             "description": {
@@ -220,19 +220,19 @@
               "title": "Scenarios an API client performs to get an access token from the authorization server",
               "type": "object",
               "properties": {
-                "authorization_url": {
+                "authorizationUrl": {
                   "title": "The authorization URL to be used",
                   "type": "string"
                 },
-                "token_url": {
+                "tokenUrl": {
                   "title": "The token URL to be used",
                   "type": "string"
                 },
-                "authorization_api": {
+                "authorizationApi": {
                   "title": "The signed URL API endpoint to be used",
                   "type": "string"
                 },
-                "refresh_url": {
+                "refreshUrl": {
                   "title": "The URL to be used for obtaining refresh tokens",
                   "type": "string"
                 },
@@ -242,14 +242,14 @@
                 }
               },
               "examples": [
-                "authorization_code",
+                "authorizationCode",
                 "implicit",
                 "password",
-                "client_credentials",
-                "signed_url"
+                "clientCredentials",
+                "signedUrl"
               ]
             },
-            "open_connect_url": {
+            "openConnectUrl": {
               "title": "This URL returns a JSON listing of the OpenID/OAuth endpoints, supported scopes and claims, public keys used to sign the tokens, and other details",
               "type": "object"
             }

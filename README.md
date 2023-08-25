@@ -13,7 +13,7 @@ describe authentication that align with the
 [OpenAPI security spec](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#security-scheme-object)
 
 The Secure Assets extension also includes support for other [authentication schemes](https://github.com/stac-utils/stac-asset#clients) specified in
- [stac-asset](https://github.com/stac-utils/stac-asset) library. A `signed_url` scheme type can be specified that describes authentication via signed
+ [stac-asset](https://github.com/stac-utils/stac-asset) library. A `signedUrl` scheme type can be specified that describes authentication via signed
   URLs returned from a user-defined API. See the [Signed URL](#url-signing) section for a Lambda function example.
 
 - Examples:
@@ -34,8 +34,8 @@ The fields in the table below can be used in these parts of STAC documents:
 
 | Field Name | Type                                                    | Description                                            |
 | ---------- | ------------------------------------------------------- | ------------------------------------------------------ |
-| security:schemes | Map<string, [SecureAssetSchemeObject](#secure-asset-scheme-object)> | A property that contains all of the [scheme definitions](#secure-asset-scheme-object) used by Assets in the STAC Item or Collection. |
-| security:refs | \[string\] | An Asset property that specifies which schemes in `security:schemes` may be used to access an Asset. |
+| `security:schemes` | Map<string, [SecureAssetSchemeObject](#secure-asset-scheme-object)> | A property that contains all of the [scheme definitions](#secure-asset-scheme-object) used by Assets in the STAC Item or Collection. |
+| `security:refs` | \[string\] | An Asset property that specifies which schemes in `security:schemes` may be used to access an Asset. |
 
 ### Scheme Types
 
@@ -47,12 +47,12 @@ practitioner may define a custom authentication scheme not included in the schem
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | `http`                    | Simple HTTP without any authentication |
 | `s3`                      | Simple S3 authentication. |
-| `planetary_computer`       | Signs URLs with the [Planetary Computer Authentication API](https://planetarycomputer.microsoft.com/docs/reference/sas/) |
+| `planetaryComputer`       | Signs URLs with the [Planetary Computer Authentication API](https://planetarycomputer.microsoft.com/docs/reference/sas/) |
 | `earthdata`               | Uses a token-based authentication to download data, from *some* Earthdata providers, e.g. DAACs |
-| `signed_url`               | Signs URLs with a user-defined authentication API. |
+| `signedUrl`               | Signs URLs with a user-defined authentication API. |
 | `oauth2`                  | [Open Authentication 2.0](https://swagger.io/docs/specification/authentication/oauth2/) configuration |
-| `api_key`                  | Description of [API key](https://swagger.io/docs/specification/authentication/api-keys/) authentication included in request headers, query parameters, or cookies. |
-| `open_id_connect`           | Description of [OpenID Connect Discovery](https://swagger.io/docs/specification/authentication/openid-connect-discovery/) authentication |
+| `apiKey`                  | Description of [API key](https://swagger.io/docs/specification/authentication/api-keys/) authentication included in request headers, query parameters, or cookies. |
+| `openIdConnect`           | Description of [OpenID Connect Discovery](https://swagger.io/docs/specification/authentication/openid-connect-discovery/) authentication |
 
 ### Secure Asset Scheme Object
 
@@ -63,13 +63,13 @@ API Key, and OpenID authentication. All the [authentication clients](https://git
 
 | Field Name  | Type   | Description                                                                                                                                         |
 | ----------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| type      | string | **REQUIRED**. The authentication scheme type used to access the data (`http` \| `s3` \| `planetary_computer` \| `earthdata` \| `signed_url` \| `oauth2` \| `api_key` \| `open_id_connect` \| `my_custom_scheme_type`).              |
-| description | string | Additional instructions for authentication                                                                                                          |
-| name | string | Required for `type: api_key`. The name of the header, query, or cookie parameter to be used.                                                                 |
-| in | string | Required for `type: api_key`. The location of the API key (`query` \| `header` \| `cookie`).                                                                  |
-| scheme | string | Required for `type: http`. The name of the HTTP Authorization scheme to be used in the [Authorization header as defined in RFC7235](https://tools.ietf.org/html/rfc7235#section-5.1).  The values used SHOULD be registered in the [IANA Authentication Scheme registry](https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml). (`basic` \| `bearer`)                                                                   |
-| flows | Map<string, [SecureAssetFlowsObject](#secure-asset-flow-object)> | Required for `type: oauth2` and `type: signed_url`. Scenarios an API client performs to get an access token from the authorization server (`authorization_code` \| `implicit` \| `password ` \| `client_credentials` \| `authorization_api`)  |
-| open_id_connect_url | string | Required for `type: open_id_connect_url`. OpenId Connect URL to discover OAuth2 configuration values. This MUST be in the form of a URL.          |
+| `type`     | string | **REQUIRED**. The authentication scheme type used to access the data (`http` \| `s3` \| `planetaryComputer` \| `earthdata` \| `signedUrl` \| `oauth2` \| `apiKey` \| `openIdConnect` \| `myCustomSchemeType`).              |
+| `description` | string | Additional instructions for authentication                                                                                                          |
+| `name` | string | Required for `type: apiKey`. The name of the header, query, or cookie parameter to be used.                                                                 |
+| `in` | string | Required for `type: apiKey`. The location of the API key (`query` \| `header` \| `cookie`).                                                                  |
+| `scheme` | string | Required for `type: http`. The name of the HTTP Authorization scheme to be used in the [Authorization header as defined in RFC7235](https://tools.ietf.org/html/rfc7235#section-5.1).  The values used SHOULD be registered in the [IANA Authentication Scheme registry](https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml). (`basic` \| `bearer`)                                                                   |
+| `flows` | Map<string, [SecureAssetFlowsObject](#secure-asset-flow-object)> | Required for `type: oauth2` and `type: signedUrl`. Scenarios an API client performs to get an access token from the authorization server (`authorizationCode` \| `implicit` \| `password ` \| `clientCredentials` \| `authorizationApi`)  |
+| `openIdConnectUrl` | string | Required for `type: openIdConnectUrl`. OpenId Connect URL to discover OAuth2 configuration values. This MUST be in the form of a URL.          |
 
 ### Secure Asset Flow Object
 
@@ -81,24 +81,24 @@ Configuration details for a supported OAuth Flow
 #### Fixed Fields
 | Field Name | Type | Description |
 | ---|:---:|--- |
-| authorization_url | `string` | Required for `oauth2` (`"implicit"`, `"authorization_code"`). The authorization URL to be used for this flow. This MUST be in the form of a URL.  |
-| token_url | `string` | Required for `oauth2` (`"password"`, `"client_credentials"`, `"authorization_code"`). The token URL to be used for this flow. This MUST be in the form of a URL.  |
-| authorization_api | `string` | Optional for `signed_url`. The signed URL API endpoint to be used for this flow. If not enferred from the client environment, this must be defined in the authentication flow.  |
-| refresh_url | `string` | Optional for `oauth2`. The URL to be used for obtaining refresh tokens. This MUST be in the form of a URL.  |
-| scopes | Map\[`string`, `string`\] | Required for `oauth2`. The available scopes for the authentication scheme. A map between the scope name and a short description for it. The map MAY be empty. |
+| `authorizationUrl` | `string` | Required for `oauth2` (`"implicit"`, `"authorizationCode"`). The authorization URL to be used for this flow. This MUST be in the form of a URL.  |
+| `tokenUrl` | `string` | Required for `oauth2` (`"password"`, `"clientCredentials"`, `"authorizationCode"`). The token URL to be used for this flow. This MUST be in the form of a URL.  |
+| `authorizationApi` | `string` | Optional for `signedUrl`. The signed URL API endpoint to be used for this flow. If not enferred from the client environment, this must be defined in the authentication flow.  |
+| `refreshUrl` | `string` | Optional for `oauth2`. The URL to be used for obtaining refresh tokens. This MUST be in the form of a URL.  |
+| `scopes` | Map\[`string`, `string`\] | Required for `oauth2`. The available scopes for the authentication scheme. A map between the scope name and a short description for it. The map MAY be empty. |
 
 ### URL Signing
 
-The `signed_url` scheme indicates that authentication will be handled by an API which generates and returns a signed URL. A signed URL authentication 
-scheme can be defined with 
+The `signedUrl` scheme type indicates that authentication will be handled by an API which generates and returns a signed URL. A signed URL 
+authentication scheme can be defined with 
 ```json
 {
   "security:schemes": {
-    "signedUrl": {
-      "type": "signed_url",
+    "signed_url_auth": {
+      "type": "signedUrl",
       "description": "Requires an authentication API",
       "flows": {
-        "signedUrl": {
+        "signed_url": {
             "authorizationApi": "https://example.com/signed_url/authorize"
         }
       }
@@ -169,6 +169,7 @@ The authentication API can be called on the client side based on an AWS S3 href 
 following code snippet.
 
 ```javascript
+
 let signed_url;
 const auth_api = "";
 
@@ -193,6 +194,7 @@ Promise(
       signed_url = respJson.signed_url;
     })
 );
+
 ```
 
 ## Contributing

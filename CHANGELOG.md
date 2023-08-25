@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Changed `type` keys to camelCase
+
 - README.md updates for OpenAPI
 - Updated secure asset item.json and collection.json for OpenAPI
 - Updated schema.json for for OpenAPI

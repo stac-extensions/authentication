@@ -44,11 +44,11 @@
       }
     },
     "signed_url_auth": {
-      "type": "signed_url",
+      "type": "signedUrl",
       "description": "Requires an authentication API",
       "flows": {
         "signedUrl": {
-          "authorizationApi": "https://example.com/signedUrl/authorize"
+          "authorizationApi": "https://example.com/signed_url/authorize"
         }
       }
     }
@@ -87,7 +87,7 @@
       "none",
       "oauth",
       "s3",
-      "signed_url"
+      "signedUrl"
     ]
   },
   "links": [
