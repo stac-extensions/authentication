@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added secure asset item.json and collection.json examples
 - Updated schema.json
 
+- Added `security:schemas` Item and Collection property which defines all the security schemas.
+- Added Asset parameter `security:refs` which specifies which schemes from `security:schemes` can be used for an asset.
+
 ### Changed
 
 - README.md updates for OpenAPI
@@ -24,6 +27,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated README.md descriptions of the library
 
 - Updated schema to secure_asset:schema to limit string values to the list of client names.
+
+- Reformatted to align with the OpenAPI spec
+- Re-added Updated schema to security:schemas make any `type` value valid
+- Changed parameters in camelCase to snake_case
 
 ### Deprecated
 
