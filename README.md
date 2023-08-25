@@ -26,15 +26,28 @@ The Secure Assets extension also includes support for other [authentication sche
 
 The fields in the table below can be used in these parts of STAC documents:
 
-- [ ] Catalogs
+- [x] Catalogs
 - [x] Collections
 - [x] Item Properties (incl. Summaries in Collections)
-- [x] Assets (for both Collections and Items, incl. Item Asset Definitions in Collections)
+- [ ] Assets (for both Collections and Items, incl. Item Asset Definitions in Collections)
 - [ ] Links
 
 | Field Name | Type                                                    | Description                                            |
 | ---------- | ------------------------------------------------------- | ------------------------------------------------------ |
 | security:schemes | Map<string, [SecureAssetSchemeObject](#secure-asset-scheme-object)> | A property that contains all of the [scheme definitions](#secure-asset-scheme-object) used by Assets in the STAC Item or Collection. |
+
+---
+
+The fields in the table below can be used in these parts of STAC documents:
+
+- [ ] Catalogs
+- [ ] Collections
+- [ ] Item Properties (incl. Summaries in Collections)
+- [x] Assets (for both Collections and Items, incl. Item Asset Definitions in Collections)
+- [x] Links
+
+| Field Name | Type                                                    | Description                                            |
+| ---------- | ------------------------------------------------------- | ------------------------------------------------------ |
 | security:refs | \[string\] | An Asset property that specifies which schemes in `security:schemes` may be used to access an Asset. |
 
 ### Scheme Types
