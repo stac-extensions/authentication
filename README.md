@@ -8,13 +8,13 @@
 - **Owner**: @jamesfisher-gis
 
 The Secure Assets extension to the [STAC](https://github.com/radiantearth/stac-spec) specification provides a way to specify the authentication 
-schemes, flows, and scopes required to access secured assets. The aim of the Secure Assets extension is to provide a standard set of fields to 
-describe authentication that align with the 
+schemes, flows, and scopes required to access Assets and Links. The aim of the Secure Assets extension is to provide a standard set of fields to 
+describe authentication and authrorization that align with the 
 [OpenAPI security spec](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#security-scheme-object)
 
-The Secure Assets extension also includes support for other [authentication schemes](https://github.com/stac-utils/stac-asset#clients) specified in
- [stac-asset](https://github.com/stac-utils/stac-asset) library. A `signedUrl` scheme type can be specified that describes authentication via signed
-  URLs returned from a user-defined API. See the [Signed URL](#url-signing) section for a Lambda function example.
+The Secure Assets extension also includes support for other [authentication schemes](https://github.com/stac-utils/stac-asset#clients) specified in 
+[stac-asset](https://github.com/stac-utils/stac-asset) library. A `signedUrl` scheme type can be specified that describes authentication via signed 
+URLs returned from a user-defined API. See the [Signed URL](#url-signing) section for a Lambda function example.
 
 - Examples:
   - [Item example](examples/item.json): Shows the basic usage of the extension in a STAC Item
@@ -26,22 +26,35 @@ The Secure Assets extension also includes support for other [authentication sche
 
 The fields in the table below can be used in these parts of STAC documents:
 
-- [ ] Catalogs
+- [x] Catalogs
 - [x] Collections
 - [x] Item Properties (incl. Summaries in Collections)
-- [x] Assets (for both Collections and Items, incl. Item Asset Definitions in Collections)
+- [ ] Assets (for both Collections and Items, incl. Item Asset Definitions in Collections)
 - [ ] Links
 
 | Field Name | Type                                                    | Description                                            |
 | ---------- | ------------------------------------------------------- | ------------------------------------------------------ |
-| `security:schemes` | Map<string, [SecureAssetSchemeObject](#secure-asset-scheme-object)> | A property that contains all of the [scheme definitions](#secure-asset-scheme-object) used by Assets in the STAC Item or Collection. |
-| `security:refs` | \[string\] | An Asset property that specifies which schemes in `security:schemes` may be used to access an Asset. |
+| `security:schemes` | Map<string, [SecureAssetSchemeObject](#secure-asset-scheme-object)> | A property that contains all of the [scheme definitions](#secure-asset-scheme-object) used by Assets and Links in the STAC Item or Collection. |
+
+---
+
+The fields in the table below can be used in these parts of STAC documents:
+
+- [ ] Catalogs
+- [ ] Collections
+- [ ] Item Properties (incl. Summaries in Collections)
+- [x] Assets (for both Collections and Items, incl. Item Asset Definitions in Collections)
+- [x] Links
+
+| Field Name | Type                                                    | Description                                            |
+| ---------- | ------------------------------------------------------- | ------------------------------------------------------ |
+| `security:refs` | \[string\] | A property that specifies which schemes in `security:schemes` may be used to access an Asset or Link. |
 
 ### Scheme Types
 
 The Secure Assets extension can be used to define relevant clients included in the [stac-asset](https://github.com/stac-utils/stac-asset) library and 
 in the [OpenAPI spec](https://swagger.io/docs/specification/authentication/). The `type` value is not restircted to the following values, so a 
-practitioner may define a custom authentication scheme not included in the scheme types below.
+practitioner may define a custom authentication or authorization scheme not included in the scheme types below.
 
 | Name                      | Description                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------- |
@@ -98,7 +111,7 @@ authentication scheme can be defined with
       "type": "signedUrl",
       "description": "Requires an authentication API",
       "flows": {
-        "signed_url": {
+        "signedUrl": {
             "authorizationApi": "https://example.com/signed_url/authorize"
         }
       }
