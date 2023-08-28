@@ -97,7 +97,10 @@
     },
     {
       "href": "https://example.com/examples/item.json",
-      "rel": "item"
+      "rel": "item",
+      "security:refs": [
+        "oauth"
+      ]
     }
   ]
 }

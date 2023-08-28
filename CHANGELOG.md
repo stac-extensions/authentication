@@ -7,12 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Initial commit of README.md
-- Added secure asset item.json and collection.json examples
-- Updated schema.json
+
+- `security:refs` parameter to Link objects in Items or Collections.
 
 - Added `security:schemas` Item and Collection property which defines all the security schemas.
 - Added Asset parameter `security:refs` which specifies which schemes from `security:schemes` can be used for an asset.
+
+- Initial commit of README.md
+- Added secure asset item.json and collection.json examples
+- Updated schema.json
 
 ### Changed
 

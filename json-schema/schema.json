@@ -15,7 +15,8 @@
           "required": [
             "type",
             "properties",
-            "assets"
+            "assets",
+            "links"
           ],
           "properties": {
             "type": {
@@ -41,7 +42,27 @@
                 "$ref": "#/definitions/fields"
               }
             }
-          }
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "if": {
+                "$ref": "#/definitions/authLink"
+              },
+              "then": {
+                "properties": {
+                  "security:refs": {
+                    "$ref": "#/definitions/fields/properties/security:refs"
+                  }
+                }
+              },
+              "else": {
+                }
+              }
+            },
+            "contains": {
+              "$ref": "#/definitions/authLink"
+            }
         }
       ]
     },
@@ -99,6 +120,26 @@
                     ]
                   }
                 }
+              }
+            },
+            "links": {
+              "type": "array",
+              "items": {
+                "if": {
+                  "$ref": "#/definitions/authLink"
+                },
+                "then": {
+                  "properties": {
+                    "security:refs": {
+                      "$ref": "#/definitions/fields/properties/security:refs"
+                    }
+                  }
+                },
+                "else": {
+                  }
+              },
+              "contains": {
+                "$ref": "#/definitions/authLink"
               }
             }
           }
@@ -167,10 +208,27 @@
         }
       ]
     },
+    "authLink": {
+      "type": "object",
+      "required": [
+        "rel"
+      ],
+      "properties": {
+        "rel": {
+          "const": "auth"
+        }
+      }
+    },
     "fields": {
       "$comment": "Add your new fields here. Don't require them here, do that above in the corresponding schema.",
       "type": "object",
       "properties": {
+        "security:refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "security:schemes": {
           "type": "object",
           "properties": {
@@ -253,12 +311,6 @@
               "title": "This URL returns a JSON listing of the OpenID/OAuth endpoints, supported scopes and claims, public keys used to sign the tokens, and other details",
               "type": "object"
             }
-          }
-        },
-        "security:refs": {
-          "type": "array",
-          "items": {
-            "type": "string"
           }
         }
       },
