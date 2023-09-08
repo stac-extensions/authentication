@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://stac-extensions.github.io/secure-assets/v1.0.0/schema.json#",
-  "title": "Secure Assets Extension",
-  "description": "STAC Secure Assets Extension for STAC Items and STAC Collections.",
+  "$id": "https://stac-extensions.github.io/authentication/v1.0.0/schema.json#",
+  "title": "Authentication Extension",
+  "description": "STAC Authentication Extension for STAC Catalogs, STAC Collections, STAC Items, STAC Assets, and STAC Links.",
   "oneOf": [
     {
       "$comment": "This is the schema for STAC Items.",
@@ -27,7 +27,7 @@
                 {
                   "$comment": "Require fields here for Item Properties.",
                   "required": [
-                    "security:schemes"
+                    "auth:schemes"
                   ]
                 },
                 {
@@ -51,8 +51,8 @@
               },
               "then": {
                 "properties": {
-                  "security:refs": {
-                    "$ref": "#/definitions/fields/properties/security:refs"
+                  "auth:refs": {
+                    "$ref": "#/definitions/fields/properties/auth:refs"
                   }
                 }
               },
@@ -91,7 +91,7 @@
             {
               "$comment": "Require fields here for Collections (top-level).",
               "required": [
-                "security:schemes"
+                "auth:schemes"
               ]
             },
             {
@@ -130,8 +130,8 @@
                 },
                 "then": {
                   "properties": {
-                    "security:refs": {
-                      "$ref": "#/definitions/fields/properties/security:refs"
+                    "auth:refs": {
+                      "$ref": "#/definitions/fields/properties/auth:refs"
                     }
                   }
                 },
@@ -193,7 +193,7 @@
         "stac_extensions": {
           "type": "array",
           "contains": {
-            "const": "https://stac-extensions.github.io/secure-assets/v1.0.0/schema.json"
+            "const": "https://stac-extensions.github.io/authentication/v1.0.0/schema.json"
           }
         }
       }
@@ -203,7 +203,7 @@
       "anyOf": [
         {
           "required": [
-            "security:schemes"
+            "auth:schemes"
           ]
         }
       ]
@@ -223,13 +223,13 @@
       "$comment": "Add your new fields here. Don't require them here, do that above in the corresponding schema.",
       "type": "object",
       "properties": {
-        "security:refs": {
+        "auth:refs": {
           "type": "array",
           "items": {
             "type": "string"
           }
         },
-        "security:schemes": {
+        "auth:schemes": {
           "type": "object",
           "properties": {
             "type": {
@@ -315,7 +315,7 @@
         }
       },
       "patternProperties": {
-        "^(?!security:)": {}
+        "^(?!auth:)": {}
       },
       "additionalProperties": false
     }
