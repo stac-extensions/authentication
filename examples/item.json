@@ -1,7 +1,7 @@
 {
   "stac_version": "1.0.0",
   "stac_extensions": [
-    "https://stac-extensions.github.io/secure-assets/v1.0.0/schema.json"
+    "https://stac-extensions.github.io/authentication/v1.0.0/schema.json"
   ],
   "type": "Feature",
   "id": "item",
@@ -40,7 +40,7 @@
   },
   "properties": {
     "datetime": "2020-12-11T22:38:32Z",
-    "security:schemes": {
+    "auth:schemes": {
       "oauth": {
         "type": "oauth2",
         "description": "requires a login and user token",
@@ -76,7 +76,7 @@
       "roles": [
         "data"
       ],
-      "security:refs": [
+      "auth:refs": [
         "oauth2"
       ]
     }

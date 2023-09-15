@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Links examples in README.md
+
 - `security:refs` parameter to Link objects in Items or Collections.
 
 - Added `security:schemas` Item and Collection property which defines all the security schemas.
@@ -18,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated schema.json
 
 ### Changed
+
+- Changed extension title to `authorization` and the field extension to `auth:`
 
 - Changed `type` keys to camelCase
 
