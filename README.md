@@ -1,4 +1,4 @@
-# Secure Assets Extension Specification
+# Authentication Extension Specification
 
 - **Title:** Secure Assets
 - **Identifier:** <https://stac-extensions.github.io/secure-assets/v1.0.0/schema.json>
