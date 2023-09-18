@@ -2,7 +2,7 @@
   "stac_version": "1.0.0",
   "stac_extensions": [
     "https://stac-extensions.github.io/item-assets/v1.0.0/schema.json",
-    "https://stac-extensions.github.io/secure-assets/v1.0.0/schema.json"
+    "https://stac-extensions.github.io/authentication/v1.0.0/schema.json"
   ],
   "type": "Collection",
   "id": "collection",
@@ -29,7 +29,7 @@
       ]
     }
   },
-  "security:schemes": {
+  "auth:schemes": {
     "oauth": {
       "type": "oauth2",
       "description": "requires a login and user token",
@@ -44,11 +44,11 @@
       }
     },
     "signed_url_auth": {
-      "type": "signed_url",
+      "type": "signedUrl",
       "description": "Requires an authentication API",
       "flows": {
         "signedUrl": {
-          "authorizationApi": "https://example.com/signedUrl/authorize"
+          "authorizationApi": "https://example.com/signed_url/authorize"
         }
       }
     }
@@ -61,7 +61,7 @@
       "roles": [
         "data"
       ],
-      "security:refs": [
+      "auth:refs": [
         "signed_url_auth"
       ]
     }
@@ -73,7 +73,7 @@
       "roles": [
         "data"
       ],
-      "security:refs": [
+      "auth:refs": [
         "oauth"
       ]
     }
@@ -83,11 +83,11 @@
       "minimum": "2015-06-23T00:00:00Z",
       "maximum": "2019-07-10T13:44:56Z"
     },
-    "security:schemes": [
+    "auth:schemes": [
       "none",
       "oauth",
       "s3",
-      "signed_url"
+      "signedUrl"
     ]
   },
   "links": [
@@ -97,7 +97,10 @@
     },
     {
       "href": "https://example.com/examples/item.json",
-      "rel": "item"
+      "rel": "item",
+      "auth:refs": [
+        "oauth"
+      ]
     }
   ]
 }

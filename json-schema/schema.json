@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://stac-extensions.github.io/secure-assets/v1.0.0/schema.json#",
-  "title": "Secure Assets Extension",
-  "description": "STAC Secure Assets Extension for STAC Items and STAC Collections.",
+  "$id": "https://stac-extensions.github.io/authentication/v1.0.0/schema.json#",
+  "title": "Authentication Extension",
+  "description": "STAC Authentication Extension for STAC Catalogs, STAC Collections, STAC Items, STAC Assets, and STAC Links.",
   "oneOf": [
     {
       "$comment": "This is the schema for STAC Items.",
@@ -15,7 +15,8 @@
           "required": [
             "type",
             "properties",
-            "assets"
+            "assets",
+            "links"
           ],
           "properties": {
             "type": {
@@ -26,7 +27,7 @@
                 {
                   "$comment": "Require fields here for Item Properties.",
                   "required": [
-                    "security:schemes"
+                    "auth:schemes"
                   ]
                 },
                 {
@@ -41,7 +42,27 @@
                 "$ref": "#/definitions/fields"
               }
             }
-          }
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "if": {
+                "$ref": "#/definitions/authLink"
+              },
+              "then": {
+                "properties": {
+                  "auth:refs": {
+                    "$ref": "#/definitions/fields/properties/auth:refs"
+                  }
+                }
+              },
+              "else": {
+                }
+              }
+            },
+            "contains": {
+              "$ref": "#/definitions/authLink"
+            }
         }
       ]
     },
@@ -70,7 +91,7 @@
             {
               "$comment": "Require fields here for Collections (top-level).",
               "required": [
-                "security:schemes"
+                "auth:schemes"
               ]
             },
             {
@@ -99,6 +120,26 @@
                     ]
                   }
                 }
+              }
+            },
+            "links": {
+              "type": "array",
+              "items": {
+                "if": {
+                  "$ref": "#/definitions/authLink"
+                },
+                "then": {
+                  "properties": {
+                    "auth:refs": {
+                      "$ref": "#/definitions/fields/properties/auth:refs"
+                    }
+                  }
+                },
+                "else": {
+                  }
+              },
+              "contains": {
+                "$ref": "#/definitions/authLink"
               }
             }
           }
@@ -152,7 +193,7 @@
         "stac_extensions": {
           "type": "array",
           "contains": {
-            "const": "https://stac-extensions.github.io/secure-assets/v1.0.0/schema.json"
+            "const": "https://stac-extensions.github.io/authentication/v1.0.0/schema.json"
           }
         }
       }
@@ -162,16 +203,33 @@
       "anyOf": [
         {
           "required": [
-            "security:schemes"
+            "auth:schemes"
           ]
         }
       ]
+    },
+    "authLink": {
+      "type": "object",
+      "required": [
+        "rel"
+      ],
+      "properties": {
+        "rel": {
+          "const": "auth"
+        }
+      }
     },
     "fields": {
       "$comment": "Add your new fields here. Don't require them here, do that above in the corresponding schema.",
       "type": "object",
       "properties": {
-        "security:schemes": {
+        "auth:refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "auth:schemes": {
           "type": "object",
           "properties": {
             "type": {
@@ -180,12 +238,12 @@
               "examples": [
                 "http",
                 "s3",
-                "planetary_computer",
+                "planetaryComputer",
                 "earthdata",
-                "signed_url",
+                "signedUrl",
                 "oauth2",
-                "api_key",
-                "open_id_connect"
+                "apiKey",
+                "openIdConnect"
               ]
             },
             "description": {
@@ -220,19 +278,19 @@
               "title": "Scenarios an API client performs to get an access token from the authorization server",
               "type": "object",
               "properties": {
-                "authorization_url": {
+                "authorizationUrl": {
                   "title": "The authorization URL to be used",
                   "type": "string"
                 },
-                "token_url": {
+                "tokenUrl": {
                   "title": "The token URL to be used",
                   "type": "string"
                 },
-                "authorization_api": {
+                "authorizationApi": {
                   "title": "The signed URL API endpoint to be used",
                   "type": "string"
                 },
-                "refresh_url": {
+                "refreshUrl": {
                   "title": "The URL to be used for obtaining refresh tokens",
                   "type": "string"
                 },
@@ -242,28 +300,22 @@
                 }
               },
               "examples": [
-                "authorization_code",
+                "authorizationCode",
                 "implicit",
                 "password",
-                "client_credentials",
-                "signed_url"
+                "clientCredentials",
+                "signedUrl"
               ]
             },
-            "open_connect_url": {
+            "openConnectUrl": {
               "title": "This URL returns a JSON listing of the OpenID/OAuth endpoints, supported scopes and claims, public keys used to sign the tokens, and other details",
               "type": "object"
             }
           }
-        },
-        "security:refs": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
         }
       },
       "patternProperties": {
-        "^(?!security:)": {}
+        "^(?!auth:)": {}
       },
       "additionalProperties": false
     }
