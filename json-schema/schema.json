@@ -274,6 +274,10 @@
                 "bearer"
               ]
             },
+            "openConnectUrl": {
+              "title": "This URL returns a JSON listing of the OpenID/OAuth endpoints, supported scopes and claims, public keys used to sign the tokens, and other details",
+              "type": "string"
+            },
             "flows": {
               "title": "Scenarios an API client performs to get an access token from the authorization server",
               "type": "object",
@@ -297,19 +301,43 @@
                 "scopes": {
                   "title": "The available scopes for the authentication scheme",
                   "type": "object"
+                },
+                "method": {
+                  "title": "HTTP request method",
+                  "type": "string",
+                  "examples": [
+                    "POST",
+                    "GET"
+                  ]
+                },
+                "parameters": {
+                  "title": "Parameter definitions for requests to the authorizationApi",
+                  "type": "object",
+                  "properties": {
+                    "in": {
+                      "title": "Location of the parameter",
+                      "type": "string",
+                      "examples": [
+                        "query",
+                        "header",
+                        "body"
+                      ]
+                    },
+                    "required": {
+                      "title": "Setting for optional or required parameter",
+                      "type": "boolean"
+                    },
+                    "description": {
+                      "title": "Plain language description of the parameter",
+                      "type": "string"
+                    },
+                    "scopes": {
+                      "title": "Schema object following the OpenAPI extended subset of the JSON Schema spec",
+                      "type": "object"
+                    }
+                  }
                 }
-              },
-              "examples": [
-                "authorizationCode",
-                "implicit",
-                "password",
-                "clientCredentials",
-                "signedUrl"
-              ]
-            },
-            "openConnectUrl": {
-              "title": "This URL returns a JSON listing of the OpenID/OAuth endpoints, supported scopes and claims, public keys used to sign the tokens, and other details",
-              "type": "object"
+              }
             }
           }
         }
