@@ -89,14 +89,26 @@ the supported OAuth Flows.
 
 Configuration details for a supported OAuth Flow
 
-#### Fixed Fields
 | Field Name | Type | Description |
 | ---|:---:|--- |
 | `authorizationUrl` | `string` | Required for `oauth2` (`"implicit"`, `"authorizationCode"`). The authorization URL to be used for this flow. This MUST be in the form of a URL.  |
 | `tokenUrl` | `string` | Required for `oauth2` (`"password"`, `"clientCredentials"`, `"authorizationCode"`). The token URL to be used for this flow. This MUST be in the form of a URL.  |
 | `authorizationApi` | `string` | Optional for `signedUrl`. The signed URL API endpoint to be used for this flow. If not enferred from the client environment, this must be defined in the authentication flow.  |
 | `refreshUrl` | `string` | Optional for `oauth2`. The URL to be used for obtaining refresh tokens. This MUST be in the form of a URL.  |
-| `scopes` | Map\[`string`, `string`\] | Required for `oauth2`. The available scopes for the authentication scheme. A map between the scope name and a short description for it. The map MAY be empty. |
+| `scopes` | Map<`string`, `string`> | Required for `oauth2`. The available scopes for the authentication scheme. A map between the scope name and a short description for it. The map MAY be empty. |
+| `method` | `string` | Required for `signedUrl`. The method to be used for requests |
+| `parameters` | Map<string, [ParameterObject](#parameter-object)> | Optional for `signedUrl`. Parameter definition for requests to the `authorizationApi` |
+
+### Parameter Object
+
+Definition for a request parameter
+
+| Field Name | Type | Description |
+| ---|:---:|--- |
+| `in` | `string` | The location of the parameter (`query` | `header` | `body`). |
+| `required` | `boolean` | Setting for optional or required parameter |
+| `description` | `string` | Optional. Plain language description of the parameter |
+| `schema` | `object` | Optional. Schema object following the [OpenAPI extended subset](https://swagger.io/docs/specification/data-models/) of the [JSON Schema spec](https://json-schema.org/) |
 
 ### Examples
 
@@ -165,8 +177,27 @@ authentication scheme can be defined with
       "type": "signedUrl",
       "description": "Requires an authentication API",
       "flows": {
-        "signedUrl": {
-            "authorizationApi": "https://example.com/signed_url/authorize"
+        "authorizationApi": "https://example.com/signed_url/authorize",
+        "method": "POST",
+        "parameters": {
+          "bucket": {
+            "in": "body",
+            "required": true,
+            "description": "asset bucket",
+            "schema": {
+              "type": "string",
+              "examples": "example-bucket"
+            }
+          },
+          "key": {
+            "in": "body",
+            "required": true,
+            "description": "asset key",
+            "schema": {
+              "type": "string",
+              "examples": "path/to/example/asset.xyz"
+            }
+          }
         }
       }
     }

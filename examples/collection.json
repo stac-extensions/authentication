@@ -47,8 +47,27 @@
       "type": "signedUrl",
       "description": "Requires an authentication API",
       "flows": {
-        "signedUrl": {
-          "authorizationApi": "https://example.com/signed_url/authorize"
+        "authorizationApi": "https://example.com/signed_url/authorize",
+        "method": "POST",
+        "parameters": {
+          "bucket": {
+            "in": "body",
+            "required": true,
+            "description": "asset-bucket",
+            "schema": {
+              "type": "string",
+              "examples": "example-bucket"
+            }
+          },
+          "key": {
+            "in": "body",
+            "required": true,
+            "description": "asset key",
+            "schema": {
+              "type": "string",
+              "examples": "path/to/example/asset.xyz"
+            }
+          }
         }
       }
     }
