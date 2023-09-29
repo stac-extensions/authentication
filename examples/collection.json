@@ -34,12 +34,14 @@
       "type": "oauth2",
       "description": "requires a login and user token",
       "flows": {
-        "authorizationUrl": "https://example.com/oauth/authorize",
-        "tokenUrl": "https://example.com/oauth/token",
-        "scopes": {
-          "read:example": "Read the example data",
-          "write:example": "Write the example data",
-          "admin:example": "Read/write/delete the example data"
+        "authorizationCode": {
+          "authorizationUrl": "https://example.com/oauth/authorize",
+          "tokenUrl": "https://example.com/oauth/token",
+          "scopes": {
+            "read:example": "Read the example data",
+            "write:example": "Write the example data",
+            "admin:example": "Read/write/delete the example data"
+          }
         }
       }
     },
@@ -47,27 +49,30 @@
       "type": "signedUrl",
       "description": "Requires an authentication API",
       "flows": {
-        "authorizationApi": "https://example.com/signed_url/authorize",
-        "method": "POST",
-        "parameters": {
-          "bucket": {
-            "in": "body",
-            "required": true,
-            "description": "asset-bucket",
-            "schema": {
-              "type": "string",
-              "examples": "example-bucket"
+        "authorizationCode": {
+          "authorizationApi": "https://example.com/signed_url/authorize",
+          "method": "POST",
+          "parameters": {
+            "bucket": {
+              "in": "body",
+              "required": true,
+              "description": "asset-bucket",
+              "schema": {
+                "type": "string",
+                "examples": "example-bucket"
+              }
+            },
+            "key": {
+              "in": "body",
+              "required": true,
+              "description": "asset key",
+              "schema": {
+                "type": "string",
+                "examples": "path/to/example/asset.xyz"
+              }
             }
           },
-          "key": {
-            "in": "body",
-            "required": true,
-            "description": "asset key",
-            "schema": {
-              "type": "string",
-              "examples": "path/to/example/asset.xyz"
-            }
-          }
+          "responseField": "signed_url"
         }
       }
     }

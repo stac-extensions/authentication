@@ -310,6 +310,10 @@
                     "GET"
                   ]
                 },
+                "responseField": {
+                  "title": "Key name for the signed URL field in an authorizationApi response",
+                  "type": "string"
+                },
                 "parameters": {
                   "title": "Parameter definitions for requests to the authorizationApi",
                   "type": "object",
@@ -331,7 +335,7 @@
                       "title": "Plain language description of the parameter",
                       "type": "string"
                     },
-                    "scopes": {
+                    "schema": {
                       "title": "Schema object following the OpenAPI extended subset of the JSON Schema spec",
                       "type": "object"
                     }

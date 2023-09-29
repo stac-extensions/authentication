@@ -8,7 +8,7 @@
 - **Owner**: @jamesfisher-gis
 
 The Authentication extension to the [STAC](https://github.com/radiantearth/stac-spec) specification provides  a standard set of fields to 
-describe authentication and authrorization schemes, flows, and scopes required to access Assets and Links that align with the 
+describe authentication and authorization schemes, flows, and scopes required to access Assets and Links that align with the 
 [OpenAPI security spec](https://swagger.io/docs/specification/authentication/)
 
 The Authentication extension also includes support for other [authentication schemes](https://github.com/stac-utils/stac-asset#clients) specified in 
@@ -79,7 +79,7 @@ API Key, and OpenID authentication. All the [authentication clients](https://git
 | `name` | string | Required for `type: apiKey`. The name of the header, query, or cookie parameter to be used.                                                                 |
 | `in` | string | Required for `type: apiKey`. The location of the API key (`query` \| `header` \| `cookie`).                                                                  |
 | `scheme` | string | Required for `type: http`. The name of the HTTP Authorization scheme to be used in the [Authorization header as defined in RFC7235](https://tools.ietf.org/html/rfc7235#section-5.1).  The values used SHOULD be registered in the [IANA Authentication Scheme registry](https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml). (`basic` \| `bearer`)                                                                   |
-| `flows` | Map<string, [AuthenticationFlowsObject](#authentication-flow-object)> | Required for `type: oauth2` and `type: signedUrl`. Scenarios an API client performs to get an access token from the authorization server (`authorizationCode` \| `implicit` \| `password ` \| `clientCredentials` \| `authorizationApi`)  |
+| `flows` | Map<string, [AuthenticationFlowsObject](#authentication-flow-object)> | Required for `type: oauth2` and `type: signedUrl`. Scenarios an API client performs to get an access token from the authorization server (`authorizationCode` \| `implicit` \| `password ` \| `clientCredentials`)  |
 | `openIdConnectUrl` | string | Required for `type: openIdConnectUrl`. OpenId Connect URL to discover OAuth2 configuration values. This MUST be in the form of a URL.          |
 
 ### Authentication Flow Object
@@ -98,6 +98,7 @@ Configuration details for a supported OAuth Flow
 | `scopes` | Map<`string`, `string`> | Required for `oauth2`. The available scopes for the authentication scheme. A map between the scope name and a short description for it. The map MAY be empty. |
 | `method` | `string` | Required for `signedUrl`. The method to be used for requests |
 | `parameters` | Map<string, [ParameterObject](#parameter-object)> | Optional for `signedUrl`. Parameter definition for requests to the `authorizationApi` |
+| `responseField` | string | Optional for `signedUrl`. Key name for the signed URL field in an authorizationApi response |
 
 ### Parameter Object
 
@@ -105,14 +106,14 @@ Definition for a request parameter
 
 | Field Name | Type | Description |
 | ---|:---:|--- |
-| `in` | `string` | The location of the parameter (`query` | `header` | `body`). |
+| `in` | `string` | The location of the parameter (`query` \| `header` \| `body`). |
 | `required` | `boolean` | Setting for optional or required parameter |
 | `description` | `string` | Optional. Plain language description of the parameter |
 | `schema` | `object` | Optional. Schema object following the [OpenAPI extended subset](https://swagger.io/docs/specification/data-models/) of the [JSON Schema spec](https://json-schema.org/) |
 
 ### Examples
 
-`auth:schemes` may be referenced identically in in STAC Asset or Link objects. Example of these two use-cases are provided below.
+`auth:schemes` may be referenced identically in a STAC Asset or Link objects. Examples of these two use-cases are provided below.
 
 #### Schema definitions
 
@@ -171,12 +172,12 @@ Definition for a request parameter
 The `signedUrl` scheme type indicates that authentication will be handled by an API which generates and returns a signed URL. A signed URL 
 authentication scheme can be defined with 
 ```json
-{
-  "auth:schemes": {
-    "signed_url_auth": {
-      "type": "signedUrl",
-      "description": "Requires an authentication API",
-      "flows": {
+"auth:schemes": {
+  "signed_url_auth": {
+    "type": "signedUrl",
+    "description": "Requires an authentication API",
+    "flows": {
+      "authorizationCode": {
         "authorizationApi": "https://example.com/signed_url/authorize",
         "method": "POST",
         "parameters": {
@@ -198,7 +199,8 @@ authentication scheme can be defined with
               "examples": "path/to/example/asset.xyz"
             }
           }
-        }
+        },
+        "responseField": "signed_url"
       }
     }
   }
@@ -295,6 +297,52 @@ Promise(
 
 ```
 
+### Planetary Computer URL Signing
+
+Planetary Computer uses the same signed URL pattern described above. Here is an example of how to configure an `auth:scheme` with instructions on
+how to sign URLs with the [Planetary Computer Data Authentication API](https://planetarycomputer.microsoft.com/docs/reference/sas/)
+
+```json
+"auth:schemes": {
+  "plantetary_computer_auth": {
+    "type": "signedUrl",
+    "description": "Requires authorization from Planetary Computer",
+    "flows": {
+      "authorizationCode": {
+        "authorizationApi": "https://planetarycomputer.microsoft.com/api/sas/v1/sign",
+        "method": "GET",
+        "parameters": {
+          "href": {
+            "in": "query",
+            "required": true,
+            "description": "HREF (URL) to sign",
+            "schema": {
+              "type": "string",
+            }
+          },
+          "duration": {
+            "in": "query",
+            "required": false,
+            "description": "The duration, in minutes, that the SAS token will be valid. Only valid for approved users.",
+            "schema": {
+              "type": "integer",
+            }
+          },
+          "_id": {
+            "in": "query",
+            "required": false,
+            "description": "Third party user identifier for metrics tracking.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "responseField": "href"
+      }
+    }
+  }
+}
+```
 ## Contributing
 
 All contributions are subject to the
