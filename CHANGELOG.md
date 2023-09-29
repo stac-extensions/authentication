@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- responseField to the authentication object. [#23](https://github.com/AtomicMaps/authentication/pull/23)
+- PlanetaryComputer signedURL example.
+
 - Added parameters object
 - Support to describe signed URL request method and parmeters.
 
