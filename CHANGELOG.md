@@ -6,24 +6,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v1.0.0] - 2023-11-07
+
 ### Added
 
-- responseField to the authentication object. [#23](https://github.com/AtomicMaps/authentication/pull/23)
+- `responseField` to the authentication object. [#23](https://github.com/AtomicMaps/authentication/pull/23)
 - PlanetaryComputer signedURL example.
 
 - Added parameters object
 - Support to describe signed URL request method and parmeters.
 
-- Links examples in README.md
+- Links examples in `README.md`
 
 - `security:refs` parameter to Link objects in Items or Collections.
 
-- Added `security:schemes` Item and Collection property which defines all the security schemas.
-- Added Asset parameter `security:refs` which specifies which schemes from `security:schemes` can be used for an asset.
-
-- Initial commit of README.md
-- Added secure asset item.json and collection.json examples
-- Updated schema.json
+- Added `schemes` Item and Collection property which defines all the security schemas. 
+- Added Asset parameter `refs` which specifies which schemes from `schemes` can be used for an asset.
 
 ### Changed
 
@@ -31,20 +29,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Changed `type` keys to camelCase
 
-- README.md updates for OpenAPI
-- Updated secure asset item.json and collection.json for OpenAPI
-- Updated schema.json for for OpenAPI
+- Updated `item.json` and `collection.json` for OpenAPI
+- Updated `schema.json` for for OpenAPI
+- Updated `item.json` and `collection.json` to handle multiple authentication schemes
+- Updated `schema.json` for the updated security object structure
 
-- README.md updates
-- Updated secure asset item.json and collection.json to handle multiple authentification schemes
-- Updated schema.json for the updated security object structure
-
-- Updated README.md descriptions of the library
-
-- Updated schema to secure_asset:schema to limit string values to the list of client names.
+- Updated schema to `schema` to limit string values to the list of client names.
+- Re-added Updated schema to `schemas` make any `type` value valid
 
 - Reformatted to align with the OpenAPI spec
-- Re-added Updated schema to security:schemas make any `type` value valid
 - Changed parameters in camelCase to snake_case
 
 ### Deprecated
