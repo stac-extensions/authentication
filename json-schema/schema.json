@@ -271,7 +271,17 @@
               "type": "string",
               "examples": [
                 "basic",
-                "bearer"
+                "bearer",
+                "digest",
+                "dpop",
+                "hoba",
+                "mutual",
+                "negotiate",
+                "oauth",
+                "privatetoken",
+                "scram-sha-1",
+                "scram-sha-256",
+                "vapid"
               ]
             },
             "openConnectUrl": {
