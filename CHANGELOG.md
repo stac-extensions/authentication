@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+### Changed
+
+- Clarify http and extend http authorization methods [#27](https://github.com/stac-extensions/authentication/pull/27)
+
+### Deprecated
+
+### Removed
+
 ## [v1.0.0] - 2023-11-07
 
 ### Added
