@@ -31,9 +31,9 @@ The fields in the table below can be used in these parts of STAC documents:
 - [ ] Assets (for both Collections and Items, incl. Item Asset Definitions in Collections)
 - [ ] Links
 
-| Field Name | Type                                                    | Description                                            |
-| ---------- | ------------------------------------------------------- | ------------------------------------------------------ |
-| `auth:schemes` | Map<string, [AuthenticationSchemeObject](#authentication-scheme-object)> | A property that contains all of the [scheme definitions](#authentication-scheme-object) used by Assets and Links in the STAC Item or Collection. |
+| Field Name     | Type                                                         | Description |
+| -------------- | ------------------------------------------------------------ | ----------- |
+| `auth:schemes` | Map<string, [Authentication Scheme Object](#authentication-scheme-object)> | A property that contains all of the [scheme definitions](#authentication-scheme-object) used by Assets and Links in the STAC Item or Collection. |
 
 ---
 
@@ -45,8 +45,8 @@ The fields in the table below can be used in these parts of STAC documents:
 - [x] Assets (for both Collections and Items, incl. Item Asset Definitions in Collections)
 - [x] Links
 
-| Field Name | Type                                                    | Description                                            |
-| ---------- | ------------------------------------------------------- | ------------------------------------------------------ |
+| Field Name  | Type       | Description |
+| ----------- | ---------- | ----------- |
 | `auth:refs` | \[string\] | A property that specifies which schemes in `auth:schemes` may be used to access an Asset or Link. |
 
 ### Scheme Types
@@ -54,16 +54,16 @@ The fields in the table below can be used in these parts of STAC documents:
 The `type` value is not restircted to the following values, so a practitioner may define a custom authentication or authorization scheme not 
 included in the scheme type standards below.
 
-| Name                      | Description                                                                                                           |
-| ------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `http`                    | Simple HTTP without any authentication |
-| `s3`                      | Simple S3 authentication. |
-| `planetaryComputer`       | Signs URLs with the [Planetary Computer Authentication API](https://planetarycomputer.microsoft.com/docs/reference/sas/) |
-| `earthdata`               | Uses a token-based authentication to download data, from *some* Earthdata providers, e.g. DAACs |
-| `signedUrl`               | Signs URLs with a user-defined authentication API. |
-| `oauth2`                  | [Open Authentication 2.0](https://swagger.io/docs/specification/authentication/oauth2/) configuration |
-| `apiKey`                  | Description of [API key](https://swagger.io/docs/specification/authentication/api-keys/) authentication included in request headers, query parameters, or cookies. |
-| `openIdConnect`           | Description of [OpenID Connect Discovery](https://swagger.io/docs/specification/authentication/openid-connect-discovery/) authentication |
+| Name                | Description |
+| ------------------- | ----------- |
+| `http`              | Simple HTTP authentication mechanisms (Basic, Bearer, Digest, etc.). |
+| `s3`                | Simple S3 authentication.                                    |
+| `planetaryComputer` | Signs URLs with the [Planetary Computer Authentication API](https://planetarycomputer.microsoft.com/docs/reference/sas/) |
+| `earthdata`         | Uses a token-based authentication to download data, from *some* Earthdata providers, e.g. DAACs |
+| `signedUrl`         | Signs URLs with a user-defined authentication API.           |
+| `oauth2`            | [Open Authentication 2.0](https://swagger.io/docs/specification/authentication/oauth2/) configuration |
+| `apiKey`            | Description of [API key](https://swagger.io/docs/specification/authentication/api-keys/) authentication included in request headers, query parameters, or cookies. |
+| `openIdConnect`     | Description of [OpenID Connect Discovery](https://swagger.io/docs/specification/authentication/openid-connect-discovery/) authentication |
 
 ### Authentication Scheme Object
 
@@ -72,15 +72,15 @@ The Authentication Scheme aligns with the
 API Key, and OpenID authentication. All the [authentication clients](https://github.com/stac-utils/stac-asset#clients) included in the 
 [stac-asset](https://github.com/stac-utils/stac-asset) library can be described, as well as a custom signed URL authentication scheme.
 
-| Field Name  | Type   | Description                                                                                                                                         |
-| ----------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `type`     | string | **REQUIRED**. The authentication scheme type used to access the data (`http` \| `s3` \| `planetaryComputer` \| `earthdata` \| `signedUrl` \| `oauth2` \| `apiKey` \| `openIdConnect` \| `myCustomSchemeType`).              |
-| `description` | string | Additional instructions for authentication                                                                                                          |
-| `name` | string | Required for `type: apiKey`. The name of the header, query, or cookie parameter to be used.                                                                 |
-| `in` | string | Required for `type: apiKey`. The location of the API key (`query` \| `header` \| `cookie`).                                                                  |
-| `scheme` | string | Required for `type: http`. The name of the HTTP Authorization scheme to be used in the [Authorization header as defined in RFC7235](https://tools.ietf.org/html/rfc7235#section-5.1).  The values used SHOULD be registered in the [IANA Authentication Scheme registry](https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml). (`basic` \| `bearer`)                                                                   |
-| `flows` | Map<string, [AuthenticationFlowsObject](#authentication-flow-object)> | Required for `type: oauth2` and `type: signedUrl`. Scenarios an API client performs to get an access token from the authorization server (`authorizationCode` \| `implicit` \| `password ` \| `clientCredentials`)  |
-| `openIdConnectUrl` | string | Required for `type: openIdConnectUrl`. OpenId Connect URL to discover OAuth2 configuration values. This MUST be in the form of a URL.          |
+| Field Name         | Type                                                         | Description |
+| ------------------ | ------------------------------------------------------------ | ----------- |
+| `type`             | string                                                       | **REQUIRED**. The authentication scheme type used to access the data (`http` \| `s3` \| `planetaryComputer` \| `earthdata` \| `signedUrl` \| `oauth2` \| `apiKey` \| `openIdConnect` \| `myCustomSchemeType`). |
+| `description`      | string                                                       | Additional instructions for authentication                   |
+| `name`             | string                                                       | Required for `type: apiKey`. The name of the header, query, or cookie parameter to be used. |
+| `in`               | string                                                       | Required for `type: apiKey`. The location of the API key (`query` \| `header` \| `cookie`). |
+| `scheme`           | string                                                       | Required for `type: http`. The name of the HTTP Authorization scheme to be used in the [Authorization header as defined in RFC7235](https://tools.ietf.org/html/rfc7235#section-5.1).  The values used SHOULD be registered in the [IANA Authentication Scheme registry](https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml). (`basic` \| `bearer` \| `digest` \| `dpop` \| `hoba` \| `mutual` \| `negotiate` \| `oauth` (1.0) \| `privatetoken` \| `scram-sha-1` \| `scram-sha-256` \| `vapid`) |
+| `flows`            | Map<string, [Authentication Flows Object](#authentication-flow-object)> | Required for `type: oauth2` and `type: signedUrl`. Scenarios an API client performs to get an access token from the authorization server (`authorizationCode` \| `implicit` \| `password ` \| `clientCredentials`) |
+| `openIdConnectUrl` | string                                                       | Required for `type: openIdConnectUrl`. OpenID Connect URL to discover OAuth2 configuration values. This MUST be in the form of a URL. |
 
 ### Authentication Flow Object
 
@@ -89,27 +89,27 @@ the supported OAuth Flows.
 
 Configuration details for a supported OAuth Flow
 
-| Field Name | Type | Description |
-| ---|:---:|--- |
-| `authorizationUrl` | `string` | Required for `oauth2` (`"implicit"`, `"authorizationCode"`). The authorization URL to be used for this flow. This MUST be in the form of a URL.  |
-| `tokenUrl` | `string` | Required for `oauth2` (`"password"`, `"clientCredentials"`, `"authorizationCode"`). The token URL to be used for this flow. This MUST be in the form of a URL.  |
-| `authorizationApi` | `string` | Optional for `signedUrl`. The signed URL API endpoint to be used for this flow. If not enferred from the client environment, this must be defined in the authentication flow.  |
-| `refreshUrl` | `string` | Optional for `oauth2`. The URL to be used for obtaining refresh tokens. This MUST be in the form of a URL.  |
-| `scopes` | Map<`string`, `string`> | Required for `oauth2`. The available scopes for the authentication scheme. A map between the scope name and a short description for it. The map MAY be empty. |
-| `method` | `string` | Required for `signedUrl`. The method to be used for requests |
-| `parameters` | Map<string, [ParameterObject](#parameter-object)> | Optional for `signedUrl`. Parameter definition for requests to the `authorizationApi` |
-| `responseField` | string | Optional for `signedUrl`. Key name for the signed URL field in an authorizationApi response |
+| Field Name         | Type                                               | Description |
+| ------------------ | -------------------------------------------------- | ----------- |
+| `authorizationUrl` | `string`                                           | Required for `oauth2` (`"implicit"`, `"authorizationCode"`). The authorization URL to be used for this flow. This MUST be in the form of a URL. |
+| `tokenUrl`         | `string`                                           | Required for `oauth2` (`"password"`, `"clientCredentials"`, `"authorizationCode"`). The token URL to be used for this flow. This MUST be in the form of a URL. |
+| `authorizationApi` | `string`                                           | Optional for `signedUrl`. The signed URL API endpoint to be used for this flow. If not enferred from the client environment, this must be defined in the authentication flow. |
+| `refreshUrl`       | `string`                                           | Optional for `oauth2`. The URL to be used for obtaining refresh tokens. This MUST be in the form of a URL. |
+| `scopes`           | Map<`string`, `string`>                            | Required for `oauth2`. The available scopes for the authentication scheme. A map between the scope name and a short description for it. The map MAY be empty. |
+| `method`           | `string`                                           | Required for `signedUrl`. The method to be used for requests |
+| `parameters`       | Map<string, [Parameter Object](#parameter-object)> | Optional for `signedUrl`. Parameter definition for requests to the `authorizationApi` |
+| `responseField`    | string                                             | Optional for `signedUrl`. Key name for the signed URL field in an authorizationApi response |
 
 ### Parameter Object
 
 Definition for a request parameter
 
-| Field Name | Type | Description |
-| ---|:---:|--- |
-| `in` | `string` | The location of the parameter (`query` \| `header` \| `body`). |
-| `required` | `boolean` | Setting for optional or required parameter |
-| `description` | `string` | Optional. Plain language description of the parameter |
-| `schema` | `object` | Optional. Schema object following the [OpenAPI extended subset](https://swagger.io/docs/specification/data-models/) of the [JSON Schema spec](https://json-schema.org/) |
+| Field Name    | Type      | Description |
+| ------------- | --------- | ----------- |
+| `in`          | `string`  | The location of the parameter (`query` \| `header` \| `body`). |
+| `required`    | `boolean` | Setting for optional or required parameter                   |
+| `description` | `string`  | Optional. Plain language description of the parameter        |
+| `schema`      | `object`  | Optional. Schema object following the [OpenAPI extended subset](https://swagger.io/docs/specification/data-models/) of the [JSON Schema spec](https://json-schema.org/) |
 
 ### Examples
 
