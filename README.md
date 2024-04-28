@@ -59,9 +59,9 @@ included in the scheme type standards below.
 | `http`              | Simple HTTP authentication mechanisms (Basic, Bearer, Digest, etc.). |
 | `s3`                | Simple S3 authentication.                                    |
 | `signedUrl`         | Signs URLs with a user-defined authentication API.           |
-| `oauth2`            | [Open Authentication 2.0](https://swagger.io/docs/specification/authentication/oauth2/) configuration |
+| `oauth2`            | [Open Authentication (OAuth) 2.0](https://datatracker.ietf.org/doc/html/rfc6749) configuration |
 | `apiKey`            | Description of [API key](https://swagger.io/docs/specification/authentication/api-keys/) authentication included in request headers, query parameters, or cookies. |
-| `openIdConnect`     | Description of [OpenID Connect Discovery](https://swagger.io/docs/specification/authentication/openid-connect-discovery/) authentication |
+| `openIdConnect`     | Description of [OpenID Connect]([https://swagger.io/docs/specification/authentication/openid-connect-discovery/](https://openid.net/specs/openid-connect-core-1_0.html)) authentication |
 
 ### Authentication Scheme Object
 
@@ -98,9 +98,6 @@ Allows configuration of the supported OAuth Flows.
 | `refreshUrl`       | `string`                | The URL to be used for obtaining refresh tokens. This MUST be in the form of a URL. |
 
 ### Signed URL Object
-
-Based on the [OpenAPI OAuth Flow Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#oauth-flows-object).
-Allows configuration of the supported OAuth Flows.
 
 | Field Name         | Type                                               | Description                                                  |
 | ------------------ | -------------------------------------------------- | ------------------------------------------------------------ |
