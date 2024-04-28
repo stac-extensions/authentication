@@ -61,7 +61,7 @@ included in the scheme type standards below.
 | `signedUrl`         | Signs URLs with a user-defined authentication API.           |
 | `oauth2`            | [Open Authentication (OAuth) 2.0](https://datatracker.ietf.org/doc/html/rfc6749) configuration |
 | `apiKey`            | Description of [API key](https://swagger.io/docs/specification/authentication/api-keys/) authentication included in request headers, query parameters, or cookies. |
-| `openIdConnect`     | Description of [OpenID Connect]([https://swagger.io/docs/specification/authentication/openid-connect-discovery/](https://openid.net/specs/openid-connect-core-1_0.html)) authentication |
+| `openIdConnect`     | Description of [OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html) authentication |
 
 ### Authentication Scheme Object
 
