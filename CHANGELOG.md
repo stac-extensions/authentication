@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-- Removed the provider-specific `planetaryComputer` and `earthdata` scheme types.
+- Removed the provider-specific `planetaryComputer` and `earthdata` scheme types [#32](https://github.com/stac-extensions/authentication/pull/32)
 
 ## [v1.0.0] - 2023-11-07
 
