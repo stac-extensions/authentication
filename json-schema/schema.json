@@ -157,8 +157,6 @@
           "examples": [
             "http",
             "s3",
-            "planetaryComputer",
-            "earthdata",
             "signedUrl",
             "oauth2",
             "apiKey",

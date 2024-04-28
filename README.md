@@ -58,8 +58,6 @@ included in the scheme type standards below.
 | ------------------- | ----------- |
 | `http`              | Simple HTTP authentication mechanisms (Basic, Bearer, Digest, etc.). |
 | `s3`                | Simple S3 authentication.                                    |
-| `planetaryComputer` | Signs URLs with the [Planetary Computer Authentication API](https://planetarycomputer.microsoft.com/docs/reference/sas/) |
-| `earthdata`         | Uses a token-based authentication to download data, from *some* Earthdata providers, e.g. DAACs |
 | `signedUrl`         | Signs URLs with a user-defined authentication API.           |
 | `oauth2`            | [Open Authentication 2.0](https://swagger.io/docs/specification/authentication/oauth2/) configuration |
 | `apiKey`            | Description of [API key](https://swagger.io/docs/specification/authentication/api-keys/) authentication included in request headers, query parameters, or cookies. |
@@ -76,7 +74,7 @@ library can be described, as well as a custom signed URL authentication scheme.
 
 | Field Name         | Type                                                         | Applies to            | Description                                                  |
 | ------------------ | ------------------------------------------------------------ | --------------------- | ------------------------------------------------------------ |
-| `type`             | string                                                       | *All*                 | **REQUIRED**. The authentication scheme type used to access the data (`http` \| `s3` \| `planetaryComputer` \| `earthdata` \| `signedUrl` \| `oauth2` \| `apiKey` \| `openIdConnect` \| a custom scheme type ). |
+| `type`             | string                                                       | *All*                 | **REQUIRED**. The authentication scheme type used to access the data (`http` \| `s3` \| `signedUrl` \| `oauth2` \| `apiKey` \| `openIdConnect` \| a custom scheme type ). |
 | `description`      | string                                                       | *All*                 | Additional instructions for authentication. [CommonMark 0.29](https://commonmark.org/) syntax MAY be used for rich text representation. |
 | `name`             | string                                                       | `apiKey`              | **REQUIRED.** The name of the header, query, or cookie parameter to be used. |
 | `in`               | string                                                       | `apiKey`              | **REQUIRED.** The location of the API key (`query` \| `header` \| `cookie`). |
@@ -310,8 +308,7 @@ Promise(
 
 ### Planetary Computer URL Signing
 
-Planetary Computer uses the same signed URL pattern described above. Here is an example of how to configure an `auth:scheme` with instructions on
-how to sign URLs with the [Planetary Computer Data Authentication API](https://planetarycomputer.microsoft.com/docs/reference/sas/)
+Planetary Computer uses the same signed URL pattern described above. Here is an example of how to configure a `signedUrl` `auth:scheme` for the  [Planetary Computer Data Authentication API](https://planetarycomputer.microsoft.com/docs/reference/sas/)
 
 ```json
 "auth:schemes": {

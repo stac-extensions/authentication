@@ -23,6 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Clarified required fields
 - Fixed examples
 
+### Removed
+
+- Removed the provider-specific `planetaryComputer` and `earthdata` scheme types.
+
 ## [v1.0.0] - 2023-11-07
 
 ### Added
