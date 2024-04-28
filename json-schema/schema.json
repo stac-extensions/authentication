@@ -1,226 +1,113 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://stac-extensions.github.io/authentication/v1.0.0/schema.json#",
+  "$id": "https://stac-extensions.github.io/authentication/v1.1.0/schema.json",
   "title": "Authentication Extension",
   "description": "STAC Authentication Extension for STAC Catalogs, STAC Collections, STAC Items, STAC Assets, and STAC Links.",
+  "type": "object",
+  "required": [
+    "stac_extensions"
+  ],
+  "properties": {
+    "stac_extensions": {
+      "type": "array",
+      "contains": {
+        "const": "https://stac-extensions.github.io/authentication/v1.1.0/schema.json"
+      }
+    }
+  },
   "oneOf": [
     {
       "$comment": "This is the schema for STAC Items.",
+      "type": "object",
+      "required": [
+        "type",
+        "properties"
+      ],
+      "properties": {
+        "type": {
+          "const": "Feature"
+        },
+        "properties": {
+          "$ref": "#/definitions/schemes_field"
+        },
+        "assets": {
+          "$ref": "#/definitions/assets"
+        },
+        "links": {
+          "$ref": "#/definitions/links"
+        }
+      }
+    },
+    {
+      "$comment": "This is the schema for STAC Collections",
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "const": "Collection"
+        },
+        "assets": {
+          "$ref": "#/definitions/assets"
+        },
+        "item_assets": {
+          "$ref": "#/definitions/assets"
+        },
+        "links": {
+          "$ref": "#/definitions/links"
+        }
+      },
       "allOf": [
         {
-          "$ref": "#/definitions/stac_extensions"
-        },
-        {
-          "type": "object",
-          "required": [
-            "type",
-            "properties",
-            "assets",
-            "links"
-          ],
-          "properties": {
-            "type": {
-              "const": "Feature"
-            },
-            "properties": {
-              "allOf": [
-                {
-                  "$comment": "Require fields here for Item Properties.",
-                  "required": [
-                    "auth:schemes"
-                  ]
-                },
-                {
-                  "$ref": "#/definitions/fields"
-                }
-              ]
-            },
-            "assets": {
-              "$comment": "This validates the fields in Item Assets, but does not require them.",
-              "type": "object",
-              "additionalProperties": {
-                "$ref": "#/definitions/fields"
-              }
-            }
-          },
-          "links": {
-            "type": "array",
-            "items": {
-              "if": {
-                "$ref": "#/definitions/authLink"
-              },
-              "then": {
-                "properties": {
-                  "auth:refs": {
-                    "$ref": "#/definitions/fields/properties/auth:refs"
-                  }
-                }
-              },
-              "else": {
-                }
-              }
-            },
-            "contains": {
-              "$ref": "#/definitions/authLink"
-            }
+          "$ref": "#/definitions/schemes_field"
         }
       ]
     },
     {
-      "$comment": "This is the schema for STAC Collections.",
+      "$comment": "This is the schema for STAC Catalogs",
       "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "const": "Catalog"
+        },
+        "links": {
+          "$ref": "#/definitions/links"
+        }
+      },
       "allOf": [
         {
-          "required": [
-            "type"
-          ],
-          "properties": {
-            "type": {
-              "const": "Collection"
-            }
-          }
-        },
-        {
-          "$ref": "#/definitions/stac_extensions"
-        }
-      ],
-      "anyOf": [
-        {
-          "$comment": "This is the schema for the top-level fields in a Collection.",
-          "allOf": [
-            {
-              "$comment": "Require fields here for Collections (top-level).",
-              "required": [
-                "auth:schemes"
-              ]
-            },
-            {
-              "$ref": "#/definitions/fields"
-            }
-          ]
-        },
-        {
-          "$comment": "This validates the fields in Collection Assets, but does not require them.",
-          "required": [
-            "assets"
-          ],
-          "properties": {
-            "assets": {
-              "type": "object",
-              "not": {
-                "additionalProperties": {
-                  "not": {
-                    "allOf": [
-                      {
-                        "$ref": "#/definitions/require_any_field"
-                      },
-                      {
-                        "$ref": "#/definitions/fields"
-                      }
-                    ]
-                  }
-                }
-              }
-            },
-            "links": {
-              "type": "array",
-              "items": {
-                "if": {
-                  "$ref": "#/definitions/authLink"
-                },
-                "then": {
-                  "properties": {
-                    "auth:refs": {
-                      "$ref": "#/definitions/fields/properties/auth:refs"
-                    }
-                  }
-                },
-                "else": {
-                  }
-              },
-              "contains": {
-                "$ref": "#/definitions/authLink"
-              }
-            }
-          }
-        },
-        {
-          "$comment": "This is the schema for the fields in Item Asset Definitions. It doesn't require any fields.",
-          "required": [
-            "item_assets"
-          ],
-          "properties": {
-            "item_assets": {
-              "type": "object",
-              "not": {
-                "additionalProperties": {
-                  "not": {
-                    "allOf": [
-                      {
-                        "$ref": "#/definitions/require_any_field"
-                      },
-                      {
-                        "$ref": "#/definitions/fields"
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          "$comment": "This is the schema for the fields in Summaries. By default, only checks the existence of the properties, but not the schema of the summaries.",
-          "required": [
-            "summaries"
-          ],
-          "properties": {
-            "summaries": {
-              "$ref": "#/definitions/require_any_field"
-            }
-          }
+          "$ref": "#/definitions/schemes_field"
         }
       ]
     }
-  ],
+  ],  
   "definitions": {
-    "stac_extensions": {
+    "schemes_field": {
       "type": "object",
       "required": [
-        "stac_extensions"
+        "auth:schemes"
       ],
       "properties": {
-        "stac_extensions": {
-          "type": "array",
-          "contains": {
-            "const": "https://stac-extensions.github.io/authentication/v1.0.0/schema.json"
-          }
+        "auth:schemes": {
+          "type": "object",
+          "patternProperties": {
+            "^.*$": {
+              "$ref": "#/definitions/auth_scheme"
+            }
+          },
+          "additionalProperties": false
         }
-      }
+      },
+      "patternProperties": {
+        "^(?!auth:)": {}
+      },
+      "additionalProperties": false
     },
-    "require_any_field": {
-      "$comment": "Please list all fields here so that we can force the existence of one of them in other parts of the schemas.",
-      "anyOf": [
-        {
-          "required": [
-            "auth:schemes"
-          ]
-        }
-      ]
-    },
-    "authLink": {
-      "type": "object",
-      "required": [
-        "rel"
-      ],
-      "properties": {
-        "rel": {
-          "const": "auth"
-        }
-      }
-    },
-    "fields": {
-      "$comment": "Add your new fields here. Don't require them here, do that above in the corresponding schema.",
+    "refs_field": {
       "type": "object",
       "properties": {
         "auth:refs": {
@@ -228,138 +115,337 @@
           "items": {
             "type": "string"
           }
-        },
-        "auth:schemes": {
-          "type": "object",
-          "properties": {
-            "type": {
-              "title": "Scheme keyword",
-              "type": "string",
-              "examples": [
-                "http",
-                "s3",
-                "planetaryComputer",
-                "earthdata",
-                "signedUrl",
-                "oauth2",
-                "apiKey",
-                "openIdConnect"
-              ]
-            },
-            "description": {
-              "title": "Authentication scheme description",
-              "type": "string"
-            },
-            "name": {
-              "title": "API Key header, query, or cookie parameter name",
-              "type": "string",
-              "examples": [
-                "x-api-key"
-              ]
-            },
-            "in": {
-              "title": "Location of the API Key",
-              "type": "string",
-              "examples": [
-                "query",
-                "header",
-                "cookie"
-              ]
-            },
-            "scheme": {
-              "title": "Name of the http authentication scheme",
-              "type": "string",
-              "examples": [
-                "basic",
-                "bearer",
-                "digest",
-                "dpop",
-                "hoba",
-                "mutual",
-                "negotiate",
-                "oauth",
-                "privatetoken",
-                "scram-sha-1",
-                "scram-sha-256",
-                "vapid"
-              ]
-            },
-            "openConnectUrl": {
-              "title": "This URL returns a JSON listing of the OpenID/OAuth endpoints, supported scopes and claims, public keys used to sign the tokens, and other details",
-              "type": "string"
-            },
-            "flows": {
-              "title": "Scenarios an API client performs to get an access token from the authorization server",
-              "type": "object",
-              "properties": {
-                "authorizationUrl": {
-                  "title": "The authorization URL to be used",
-                  "type": "string"
-                },
-                "tokenUrl": {
-                  "title": "The token URL to be used",
-                  "type": "string"
-                },
-                "authorizationApi": {
-                  "title": "The signed URL API endpoint to be used",
-                  "type": "string"
-                },
-                "refreshUrl": {
-                  "title": "The URL to be used for obtaining refresh tokens",
-                  "type": "string"
-                },
-                "scopes": {
-                  "title": "The available scopes for the authentication scheme",
-                  "type": "object"
-                },
-                "method": {
-                  "title": "HTTP request method",
-                  "type": "string",
-                  "examples": [
-                    "POST",
-                    "GET"
-                  ]
-                },
-                "responseField": {
-                  "title": "Key name for the signed URL field in an authorizationApi response",
-                  "type": "string"
-                },
-                "parameters": {
-                  "title": "Parameter definitions for requests to the authorizationApi",
-                  "type": "object",
-                  "properties": {
-                    "in": {
-                      "title": "Location of the parameter",
-                      "type": "string",
-                      "examples": [
-                        "query",
-                        "header",
-                        "body"
-                      ]
-                    },
-                    "required": {
-                      "title": "Setting for optional or required parameter",
-                      "type": "boolean"
-                    },
-                    "description": {
-                      "title": "Plain language description of the parameter",
-                      "type": "string"
-                    },
-                    "schema": {
-                      "title": "Schema object following the OpenAPI extended subset of the JSON Schema spec",
-                      "type": "object"
-                    }
-                  }
-                }
-              }
-            }
-          }
         }
       },
       "patternProperties": {
         "^(?!auth:)": {}
       },
       "additionalProperties": false
+    },
+    "assets": {
+      "type": "object",
+      "additionalProperties": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/refs_field"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "alternate": {
+                "$ref": "#/definitions/refs_field"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/refs_field"
+      }
+    },
+    "auth_scheme": {
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "title": "Scheme keyword",
+          "type": "string",
+          "examples": [
+            "http",
+            "s3",
+            "signedUrl",
+            "oauth2",
+            "apiKey",
+            "openIdConnect"
+          ]
+        },
+        "description": {
+          "title": "Authentication scheme description",
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "apiKey"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "required": [
+              "name",
+              "in"
+            ],
+            "properties": {
+              "name": {
+                "title": "API Key header, query, or cookie parameter name",
+                "type": "string",
+                "examples": [
+                  "x-api-key"
+                ]
+              },
+              "in": {
+                "title": "Location of the API Key",
+                "type": "string",
+                "examples": [
+                  "query",
+                  "header",
+                  "cookie"
+                ]
+              }
+            }
+          },
+          "else": {
+            "type": "object",
+            "properties": {
+              "name": false,
+              "in": false
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "http"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "required": [
+              "scheme"
+            ],
+            "properties": {
+              "scheme": {
+                "title": "Name of the http authentication scheme",
+                "type": "string",
+                "examples": [
+                  "basic",
+                  "bearer",
+                  "digest",
+                  "dpop",
+                  "hoba",
+                  "mutual",
+                  "negotiate",
+                  "oauth",
+                  "privatetoken",
+                  "scram-sha-1",
+                  "scram-sha-256",
+                  "vapid"
+                ]
+              }
+            }
+          },
+          "else": {
+            "type": "object",
+            "properties": {
+              "scheme": false
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "oauth2",
+                  "signedUrl"
+                ]
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "required": [
+              "flows"
+            ],
+            "if": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "oauth2"
+                }
+              }
+            },
+            "then": {
+              "type": "object",
+              "title": "OAuth2 Flows",
+              "properties": {
+                "flows": {
+                  "additionalProperties": {
+                    "$ref": "#/definitions/oauth2_flow"
+                  },
+                  "allOf": [
+                    {
+                      "patternProperties": {
+                        "^(implicit|authorizationCode)*$": {
+                          "required": [
+                            "authorizationUrl"
+                          ]
+                        },
+                        "^(password|clientCredentials|authorizationCode)*$": {
+                          "required": [
+                            "tokenUrl"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "else": {
+              "type": "object",
+              "title": "Signed URL",
+              "properties": {
+                "flows": {
+                  "additionalProperties": {
+                    "$ref": "#/definitions/signed_url_flow"
+                  }
+                }
+              }
+            }
+          },
+          "else": {
+            "type": "object",
+            "properties": {
+              "flows": false
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "openIdConnectUrl"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "required": [
+              "openIdConnectUrl"
+            ],
+            "properties": {
+              "openIdConnectUrl": {
+                "title": "This URL returns a JSON listing of the OpenID/OAuth endpoints, supported scopes and claims, public keys used to sign the tokens, and other details",
+                "type": "string"
+              }
+            }
+          },
+          "else": {
+            "type": "object",
+            "properties": {
+              "openIdConnectUrl": false
+            }
+          }
+        }
+      ]
+    },
+    "oauth2_flow": {
+      "type": "object",
+      "required": [
+        "scopes"
+      ],
+      "properties": {
+        "authorizationUrl": {
+          "title": "The authorization URL to be used",
+          "type": "string",
+          "format": "uri"
+        },
+        "tokenUrl": {
+          "title": "The token URL to be used",
+          "type": "string",
+          "format": "uri"
+        },
+        "refreshUrl": {
+          "title": "The URL to be used for obtaining refresh tokens",
+          "type": "string",
+          "format": "uri"
+        },
+        "scopes": {
+          "title": "The available scopes for the authentication scheme",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "signed_url_flow": {
+      "type": "object",
+      "required": [
+        "method",
+        "authorizationApi"
+      ],
+      "properties": {
+        "authorizationApi": {
+          "title": "The signed URL API endpoint to be used",
+          "type": "string",
+          "format": "uri"
+        },
+        "method": {
+          "title": "HTTP request method",
+          "type": "string",
+          "examples": [
+            "POST",
+            "GET"
+          ]
+        },
+        "responseField": {
+          "title": "Key name for the signed URL field in an authorizationApi response",
+          "type": "string"
+        },
+        "parameters": {
+          "title": "Parameter definitions for requests to the authorizationApi",
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "in",
+              "required"
+            ],
+            "properties": {
+              "in": {
+                "title": "Location of the parameter",
+                "type": "string",
+                "examples": [
+                  "query",
+                  "header",
+                  "body"
+                ]
+              },
+              "required": {
+                "title": "Setting for optional or required parameter",
+                "type": "boolean"
+              },
+              "description": {
+                "title": "Plain language description of the parameter",
+                "type": "string"
+              },
+              "schema": {
+                "$ref": "http://json-schema.org/draft-07/schema"
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

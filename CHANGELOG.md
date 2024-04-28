@@ -6,15 +6,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
+## [v1.1.0] - 2023-04-30
 
 ### Changed
 
 - Clarify http and extend http authorization methods [#27](https://github.com/stac-extensions/authentication/pull/27)
+- Split Authentication Flows Object into OAuth2 Flow Object and Signed URL Object
+- The JSON Schema is much stricter compared to before, actually enforcing many restrictions documented in the written spec
+- The Parameter Schemas must comply to JSON Schema draft-07 instead of OpenAPI Schema [#21](https://github.com/stac-extensions/authentication/issues/21)
 
-### Deprecated
+### Fixed
+
+- JSON Schema supports Catalogs
+- Fixed various other issues in the JSON Schema
+- Clarified which fields apply to which schema type
+- Clarified required fields
+- Fixed examples
 
 ### Removed
+
+- Removed the provider-specific `planetaryComputer` and `earthdata` scheme types [#32](https://github.com/stac-extensions/authentication/pull/32)
 
 ## [v1.0.0] - 2023-11-07
 
@@ -58,5 +69,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-[Unreleased]: <https://github.com/stac-extensions/authentication/compare/v1.0.0...HEAD>
+[Unreleased]: <https://github.com/stac-extensions/authentication/compare/v1.1.0...HEAD>
+[v1.1.0]: <https://github.com/stac-extensions/authentication/compare/v1.0.0...v1.1.0>
 [v1.0.0]: <https://github.com/stac-extensions/authentication/tree/v1.0.0>
