@@ -334,7 +334,7 @@
             "properties": {
               "type": {
                 "type": "string",
-                "const": "openIdConnectUrl"
+                "const": "openIdConnect"
               }
             }
           },
