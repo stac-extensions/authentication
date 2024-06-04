@@ -51,7 +51,7 @@ The fields in the table below can be used in these parts of STAC documents:
 
 ### Scheme Types
 
-The `type` value is not restircted to the following values, so a practitioner may define a custom authentication or authorization scheme not 
+The `type` value is not restricted to the following values, so a practitioner may define a custom authentication or authorization scheme not 
 included in the scheme type standards below.
 
 | Name                | Description |
