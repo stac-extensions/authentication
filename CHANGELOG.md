@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add uri-js ^4.4.1 as a dependency [#35](https://github.com/stac-extensions/authentication/pull/35)
+
 ## [v1.1.0] - 2023-04-28
 
 ### Changed
