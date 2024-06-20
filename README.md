@@ -93,7 +93,7 @@ Allows configuration of the supported OAuth Flows.
 | Field Name         | Type                    | Description                                                  |
 | ------------------ | ----------------------- | ------------------------------------------------------------ |
 | `authorizationUrl` | `string`                | **REQUIRED** for parent keys: `"implicit"`, `"authorizationCode"`. The authorization URL to be used for this flow. This MUST be in the form of a URL. |
-| `tokenUrl`         | `string`                | **REQUIRED** for parent keys: `"password"`, `"clientCredentials"`, `"authorizationCode"`. The token URL to be used for sthis flow. This MUST be in the form of a URL. |
+| `tokenUrl`         | `string`                | **REQUIRED** for parent keys: `"password"`, `"clientCredentials"`, `"authorizationCode"`. The token URL to be used for this flow. This MUST be in the form of a URL. |
 | `scopes`           | Map<`string`, `string`> | **REQUIRED.** The available scopes for the authentication scheme. A map between the scope name and a short description for it. The map MAY be empty. |
 | `refreshUrl`       | `string`                | The URL to be used for obtaining refresh tokens. This MUST be in the form of a URL. |
 
