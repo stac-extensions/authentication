@@ -363,6 +363,9 @@ For more information please see either
 [GDAL vsis3](https://gdal.org/en/latest/user/virtual_file_systems.html#vsis3-aws-s3-files) or
 [AWS CLI](https://docs.aws.amazon.com/cli/v1/userguide/cli-configure-files.html) documentation. 
 
+Additionally, if the `s3` authentication method is referred to through `auth:refs`, you should disable signing requests,
+e.g. through setting `AWS_NO_SIGN_REQUEST` to `NO`. Otherwise it should be `YES`.
+
 ## Contributing
 
 All contributions are subject to the
