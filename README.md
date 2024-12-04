@@ -348,6 +348,24 @@ Planetary Computer uses the same signed URL pattern described above. Here is an 
   }
 }
 ```
+
+### Simple S3 authentication
+
+To use simple S3 authentication one has to set some environmental variables with S3 credentials:
+
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_ACCESS_KEY_ID`
+
+**or** specify a [user profile](https://docs.aws.amazon.com/cli/v1/userguide/cli-configure-files.html#cli-configure-files-format)
+with a proper reference to `AWS_PROFILE` in the file `AWS_CONFIG_FILE`.
+
+For more information please see either
+[GDAL vsis3](https://gdal.org/en/latest/user/virtual_file_systems.html#vsis3-aws-s3-files) or
+[AWS CLI](https://docs.aws.amazon.com/cli/v1/userguide/cli-configure-files.html) documentation. 
+
+Additionally, if the `s3` authentication method is referred to through `auth:refs`, you should disable signing requests,
+e.g. through setting `AWS_NO_SIGN_REQUEST` to `NO`. Otherwise it should be `YES`.
+
 ## Contributing
 
 All contributions are subject to the
