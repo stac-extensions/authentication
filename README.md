@@ -129,9 +129,11 @@ Definition for a request parameter.
     "type": "oauth2",
     "description": "requires a login and user token",
     "flows": {
-      "authorizationUrl": "https://example.com/oauth/authorize",
-      "tokenUrl": "https://example.com/oauth/token",
-      "scopes": {}
+      "authorizationCode": {
+        "authorizationUrl": "https://example.com/oauth/authorize",
+        "tokenUrl": "https://example.com/oauth/token",
+        "scopes": {}
+      }
     }
   }
 }
