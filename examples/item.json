@@ -56,9 +56,10 @@
           }
         }
       },
-      "none": {
-        "type": "none",
-        "description": "Free access without restrictions"
+      "basic": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "Requires Basic Authentication"
       }
     }
   },
