@@ -55,11 +55,6 @@
             }
           }
         }
-      },
-      "none": {
-        "type": "http",
-        "scheme": "basic",
-        "description": "Free access without restrictions"
       }
     }
   },
