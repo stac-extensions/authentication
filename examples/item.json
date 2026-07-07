@@ -57,8 +57,7 @@
         }
       },
       "none": {
-        "type": "http",
-        "scheme": "basic",
+        "type": "none",
         "description": "Free access without restrictions"
       }
     }
