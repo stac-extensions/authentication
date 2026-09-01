@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v1.2.0] - 2026-09-01
+
 ### Added
 
 - `tokenExchange` pre-defined OAuth2 flow key for OAuth 2.0 Token Exchange
@@ -88,6 +90,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-[Unreleased]: <https://github.com/stac-extensions/authentication/compare/v1.1.0...HEAD>
+[Unreleased]: <https://github.com/stac-extensions/authentication/compare/v1.2.0...HEAD>
+[v1.2.0]: <https://github.com/stac-extensions/authentication/compare/v1.1.0...v1.2.0>
 [v1.1.0]: <https://github.com/stac-extensions/authentication/compare/v1.0.0...v1.1.0>
 [v1.0.0]: <https://github.com/stac-extensions/authentication/tree/v1.0.0>
