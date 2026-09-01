@@ -1,0 +1,81 @@
+{
+  "type": "Collection",
+  "stac_version": "1.0.0",
+  "id": "collection-token-exchange",
+  "title": "Gated collection — two-step access via OAuth 2.0 Token Exchange",
+  "description": "Public STAC metadata, access-controlled assets. The asset points at the scheme that guards it (`auth:refs`); that scheme points the same way (scheme-level `auth:refs`) at the identity scheme(s) whose token it exchanges — any one of them. The `oidc` scheme guards no asset on its own: it is the exchange's input.",
+  "license": "proprietary",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/authentication/v1.1.0/schema.json"
+  ],
+  "auth:schemes": {
+    "oidc": {
+      "type": "openIdConnect",
+      "openIdConnectUrl": "https://auth.example.com/.well-known/openid-configuration"
+    },
+    "token_exchange": {
+      "type": "oauth2",
+      "description": "RFC 8693 token exchange: present the `oidc` identity token as the `subject_token` at the `tokenUrl` and receive short-lived, scoped credentials covering every asset below.",
+      "auth:refs": [
+        "oidc"
+      ],
+      "flows": {
+        "tokenExchange": {
+          "tokenUrl": "https://credentials.example.com/oauth/token",
+          "subjectTokenType": "urn:ietf:params:oauth:token-type:id_token",
+          "scopes": {
+            "read:data": "Read this collection's data assets"
+          }
+        }
+      }
+    }
+  },
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          -3.9,
+          40.3,
+          -3.5,
+          40.6
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2025-01-01T00:00:00Z",
+          null
+        ]
+      ]
+    }
+  },
+  "links": [
+    {
+      "href": "https://example.com/examples/collection-token-exchange.json",
+      "rel": "self"
+    }
+  ],
+  "assets": {
+    "data": {
+      "href": "https://storage.example.com/private-bucket/data.parquet",
+      "type": "application/vnd.apache.parquet",
+      "roles": [
+        "data"
+      ],
+      "auth:refs": [
+        "token_exchange"
+      ]
+    },
+    "metadata": {
+      "href": "https://storage.example.com/private-bucket/metadata.json",
+      "type": "application/json",
+      "roles": [
+        "metadata"
+      ],
+      "auth:refs": [
+        "token_exchange"
+      ]
+    }
+  }
+}
