@@ -300,12 +300,12 @@
                   "allOf": [
                     {
                       "patternProperties": {
-                        "^(implicit|authorizationCode)*$": {
+                        "^(implicit|authorizationCode)$": {
                           "required": [
                             "authorizationUrl"
                           ]
                         },
-                        "^(password|clientCredentials|authorizationCode|tokenExchange)*$": {
+                        "^(password|clientCredentials|authorizationCode|tokenExchange)$": {
                           "required": [
                             "tokenUrl"
                           ]

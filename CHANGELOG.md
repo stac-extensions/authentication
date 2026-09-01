@@ -21,6 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `subject_token_type` URN, for when the referenced scheme yields more than one kind
   of token; defaults from the `type` of the referenced scheme used
 
+### Fixed
+
+- OAuth2 flow key `patternProperties` regexes no longer end in `*`, so they match only the intended flow keys
+
 ## [v1.1.0] - 2023-04-28
 
 ### Changed
