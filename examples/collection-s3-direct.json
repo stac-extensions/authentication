@@ -1,0 +1,82 @@
+{
+  "type": "Collection",
+  "stac_version": "1.0.0",
+  "id": "collection-s3-direct-jwt",
+  "title": "Direct S3 access with a JWT session token",
+  "description": "Read an S3 asset with the public project reference as both signing values and a JWT access token as the session token.",
+  "license": "CC-BY-4.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/authentication/v1.2.0/schema.json",
+    "https://stac-extensions.github.io/storage/v2.0.0/schema.json"
+  ],
+  "auth:schemes": {
+    "oidc": {
+      "type": "openIdConnect",
+      "description": "Read advertised scopes from scopes_supported at this well-known discovery URL. The list can be incomplete.",
+      "openIdConnectUrl": "https://identity.example.com/.well-known/openid-configuration"
+    },
+    "s3_direct": {
+      "type": "s3",
+      "description": "This example gateway uses example-tenant as both the tenant identifier in AccessKeyId and the public signing value in SecretAccessKey. Put the JWT access token from oidc in SessionToken; the gateway checks its scope and access policy.",
+      "auth:refs": [
+        "oidc"
+      ],
+      "credentialProvider": {
+        "type": "jwtSessionToken",
+        "accessKeyId": "example-tenant",
+        "secretAccessKey": "example-tenant",
+        "scope": "read:data"
+      }
+    }
+  },
+  "storage:schemes": {
+    "object_storage": {
+      "type": "custom-s3",
+      "platform": "https://objects.example.com",
+      "bucket": "example-data",
+      "region": "us-east-1"
+    }
+  },
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          -180,
+          -90,
+          180,
+          90
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2026-01-01T00:00:00Z",
+          null
+        ]
+      ]
+    }
+  },
+  "links": [
+    {
+      "href": "https://catalog.example.com/collections/collection-s3-direct-jwt",
+      "rel": "self",
+      "type": "application/json"
+    }
+  ],
+  "assets": {
+    "data": {
+      "href": "s3://example-data/cubes/example.zarr",
+      "type": "application/vnd+zarr",
+      "roles": [
+        "data"
+      ],
+      "storage:refs": [
+        "object_storage"
+      ],
+      "auth:refs": [
+        "s3_direct"
+      ]
+    }
+  }
+}

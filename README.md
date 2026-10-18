@@ -18,6 +18,10 @@ URLs returned from a user-defined API. See the [Signed URL](#url-signing) sectio
 - Examples:
   - [Item example](examples/item.json): Shows the basic usage of the extension in a STAC Item
   - [Collection example](examples/collection.json): Shows the basic usage of the extension in a STAC Collection
+  - [OAuth 2.0 Token Exchange example](examples/collection-token-exchange.json): Shows an identity token exchanged for an OAuth access token
+  - [Public S3 example](examples/collection-s3-public.json): Reads an S3 asset without request signing
+  - [S3 STS exchange example](examples/collection-s3-sts.json): Gets temporary S3 signing credentials through an AWS-compatible STS endpoint
+  - [S3 direct JWT example](examples/collection-s3-direct.json): Uses public tenant signing values and a JWT access token as the S3 session token
 - [JSON Schema](json-schema/schema.json)
 - [Changelog](./CHANGELOG.md)
 
@@ -33,7 +37,7 @@ The fields in the table below can be used in these parts of STAC documents:
 
 | Field Name     | Type                                                         | Description |
 | -------------- | ------------------------------------------------------------ | ----------- |
-| `auth:schemes` | Map<string, [Authentication Scheme Object](#authentication-scheme-object)> | A property that contains all of the [scheme definitions](#authentication-scheme-object) used by Assets and Links in the STAC Item or Collection. |
+| `auth:schemes` | Map<string, [Authentication Scheme Object](#authentication-scheme-object)> | **REQUIRED.** The [scheme definitions](#authentication-scheme-object) used in this Catalog, Collection, or Item. The map MAY be empty. |
 
 ---
 
@@ -57,7 +61,7 @@ included in the scheme type standards below.
 | Name                | Description |
 | ------------------- | ----------- |
 | `http`              | Simple HTTP authentication mechanisms (Basic, Bearer, Digest, etc.). |
-| `s3`                | Simple S3 authentication.                                    |
+| `s3`                | S3 request signing, with an optional credential provider.    |
 | `signedUrl`         | Signs URLs with a user-defined authentication API.           |
 | `oauth2`            | [Open Authentication (OAuth) 2.0](https://datatracker.ietf.org/doc/html/rfc6749) configuration |
 | `apiKey`            | Description of [API key](https://swagger.io/docs/specification/authentication/api-keys/) authentication included in request headers, query parameters, or cookies. |
@@ -77,6 +81,7 @@ library can be described, as well as a custom signed URL authentication scheme.
 | `type`             | string                                                       | *All*                 | **REQUIRED**. The authentication scheme type used to access the data (`http` \| `s3` \| `signedUrl` \| `oauth2` \| `apiKey` \| `openIdConnect` \| a custom scheme type ). |
 | `description`      | string                                                       | *All*                 | Additional instructions for authentication. [CommonMark 0.29](https://commonmark.org/) syntax MAY be used for rich text representation. |
 | `auth:refs`        | \[string\]                                                  | *All*                 | Keys of other entries in `auth:schemes` that may supply this scheme's input: any *one* of the referenced schemes is completed first, and the token it yields is the input to this one. **REQUIRED with at least one entry** for an `oauth2` scheme declaring a `tokenExchange` flow (the token obtained through whichever referenced scheme was used is the RFC 8693 `subject_token`); MAY be used by other types, e.g. a `signedUrl` scheme naming the scheme(s) whose token authenticates requests to its `authorizationApi`. References MUST NOT form cycles. |
+| `credentialProvider` | [S3 Credential Provider Object](#s3-credential-provider-object) | `s3` | How the client obtains or builds credentials for S3 Signature Version 4 requests. When present, `auth:refs` is **REQUIRED** with at least one entry. |
 | `name`             | string                                                       | `apiKey`              | **REQUIRED.** The name of the header, query, or cookie parameter to be used. |
 | `in`               | string                                                       | `apiKey`              | **REQUIRED.** The location of the API key (`query` \| `header` \| `cookie`). |
 | `scheme`           | string                                                       | `http`                | **REQUIRED.** The name of the HTTP Authorization scheme to be used in the [Authorization header as defined in RFC7235](https://tools.ietf.org/html/rfc7235#section-5.1).  The values used SHOULD be registered in the [IANA Authentication Scheme registry](https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml). (`basic` \| `bearer` \| `digest` \| `dpop` \| `hoba` \| `mutual` \| `negotiate` \| `oauth` (1.0) \| `privatetoken` \| `scram-sha-1` \| `scram-sha-256` \| `vapid`) |
@@ -85,6 +90,88 @@ library can be described, as well as a custom signed URL authentication scheme.
 
 The column "Applies to" specifies for which values of `type` the fields only apply.
 They are also only required in this context.
+
+### S3 Credential Provider Object
+
+`credentialProvider` tells an S3 client how to get signing credentials:
+
+- `assumeRoleWithWebIdentity`: exchange an OIDC ID token at STS for temporary
+  credentials. See the [STS example](examples/collection-s3-sts.json).
+- `jwtSessionToken`: use a JWT access token as the S3 session token, with fixed
+  tenant signing values. See the [direct JWT example](examples/collection-s3-direct.json).
+
+The S3 scheme MUST have at least one input scheme in `auth:refs`.
+References run from Asset or Link → S3 scheme → input scheme. Each entry is
+an alternative; a sequence uses a chain. References MUST exist and MUST NOT
+form cycles. Each input MUST supply the token type required by the profile.
+Without `credentialProvider`, the client uses its configured credentials,
+such as an AWS profile.
+
+Clients need a helper to get and renew these credentials. Login and audience
+still need client configuration. The examples use the Storage extension for
+endpoint, bucket, and region.
+
+| Field Name | Type | Applies to | Description |
+| ---------- | ---- | ---------- | ----------- |
+| `type` | string | *All* | **REQUIRED.** `assumeRoleWithWebIdentity` or `jwtSessionToken`. |
+| `subjectTokenType` | string | *All* | Optional input token type URI. MUST match the table below. |
+| `stsUrl` | string | `assumeRoleWithWebIdentity` | **REQUIRED.** AWS-compatible STS endpoint URL. |
+| `roleArn` | string | `assumeRoleWithWebIdentity` | **REQUIRED.** Non-empty STS role identifier. Use an ARN with standard AWS clients. |
+| `accessKeyId` | string | `jwtSessionToken` | **REQUIRED.** Non-empty tenant identifier copied to `AccessKeyId`. |
+| `secretAccessKey` | string | `jwtSessionToken` | **REQUIRED.** Non-empty value copied unchanged to `SecretAccessKey`. Can be the same tenant identifier as `accessKeyId`. |
+| `scope` | string | `jwtSessionToken` | **REQUIRED.** OAuth scopes to request, separated by spaces. MAY be empty. |
+
+Only the fields listed for each profile are allowed. The schema accepts any
+string for `scope`; the provider decides which scopes it supports.
+`accessKeyId` and `secretAccessKey` are literal values, not lookup references.
+
+The profile selects the input token, even when OIDC returns both token kinds:
+
+| Provider type | Input response field | `subjectTokenType` |
+| ------------- | -------------------- | ------------------ |
+| `assumeRoleWithWebIdentity` | `id_token` | `urn:ietf:params:oauth:token-type:id_token` |
+| `jwtSessionToken` | `access_token`, which MUST be a JWT | `urn:ietf:params:oauth:token-type:access_token` |
+
+These rules also apply when `subjectTokenType` is omitted. Schema defaults
+do not insert values. The field adds no parameter to STS or S3 requests.
+For OAuth `tokenExchange` inputs, the helper MUST check that `issued_token_type`
+matches the profile.
+
+Identity tokens, session tokens, and runtime expiry MUST NOT appear in STAC metadata.
+Public metadata MUST use public signing values. Private tenant values MAY
+appear only in metadata restricted to clients authorized to receive them.
+Direct-profile signing values MUST NOT grant access without a valid JWT.
+
+#### Assume role with web identity
+
+Get an OIDC ID token through the input scheme. Send an AWS Query `POST` to
+`stsUrl` with `Content-Type: application/x-www-form-urlencoded` and these
+fields: `Action=AssumeRoleWithWebIdentity`, `Version=2011-06-15`, `RoleArn`,
+`WebIdentityToken`, and a client-generated `RoleSessionName`.
+`DurationSeconds` is optional. See the
+[STS operation](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRoleWithWebIdentity.html).
+
+Use the returned `Credentials`, including the session token. Renew
+before `Expiration`. This profile covers OIDC ID tokens only.
+
+#### Direct JWT session token
+
+Request the scopes in `scope` through the input scheme, plus `openid` for
+OIDC and any scopes needed by the login flow. The helper MUST fail if required
+storage scopes are not granted. They MUST appear in the JWT's space-separated
+`scope` claim; see the
+[JWT access-token profile](https://www.rfc-editor.org/rfc/rfc9068.html#section-2.2.3).
+
+Use the JWT access token as `SessionToken`; no STS call. The JWT MUST have
+an `exp` claim with a NumericDate value. Renew before that time, or an earlier
+expiry from `expires_in`.
+
+The gateway MUST check SigV4 and the JWT's signature, issuer, audience, expiry,
+and required scopes. Its policy MUST authorize the tenant, operation, and
+asset. A public signing value adds no independent proof of identity; access
+depends on HTTPS and the JWT and policy checks. A rejected or missing token
+MUST NOT cause a fallback to unsigned access or unrelated credentials.
+Native AWS S3 does not support this JWT profile.
 
 ### OAuth2 Flow Object
 
@@ -410,6 +497,10 @@ with a proper reference to `AWS_PROFILE` in the file `AWS_CONFIG_FILE`.
 For more information please see either
 [GDAL vsis3](https://gdal.org/en/latest/user/virtual_file_systems.html#vsis3-aws-s3-files) or
 [AWS CLI](https://docs.aws.amazon.com/cli/v1/userguide/cli-configure-files.html) documentation. 
+
+Use `credentialProvider` to exchange a token at STS or build direct JWT
+credentials from a referenced identity scheme. See the
+[S3 Credential Provider Object](#s3-credential-provider-object) and its examples.
 
 Additionally, if the `s3` authentication method is referred to through `auth:refs`, you should disable signing requests,
 e.g. through setting `AWS_NO_SIGN_REQUEST` to `NO`. Otherwise it should be `YES`.

@@ -173,6 +173,9 @@
           "items": {
             "type": "string"
           }
+        },
+        "credentialProvider": {
+          "$ref": "#/definitions/s3_credential_provider"
         }
       },
       "allOf": [
@@ -365,6 +368,44 @@
           }
         },
         {
+          "$comment": "An S3 scheme with credentialProvider must reference at least one input scheme. Other scheme types cannot use credentialProvider.",
+          "if": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "s3"
+              }
+            }
+          },
+          "then": {
+            "if": {
+              "type": "object",
+              "required": [
+                "credentialProvider"
+              ]
+            },
+            "then": {
+              "type": "object",
+              "required": [
+                "auth:refs"
+              ],
+              "properties": {
+                "auth:refs": {
+                  "type": "array",
+                  "minItems": 1
+                }
+              }
+            }
+          },
+          "else": {
+            "type": "object",
+            "properties": {
+              "credentialProvider": false
+            }
+          }
+        },
+        {
           "$comment": "A tokenExchange flow consumes another scheme's token: the scheme must reference at least one scheme; the token obtained through whichever one the client uses is the RFC 8693 subject_token.",
           "if": {
             "type": "object",
@@ -395,6 +436,85 @@
               }
             }
           }
+        }
+      ]
+    },
+    "s3_credential_provider": {
+      "title": "S3 Credential Provider Object",
+      "type": "object",
+      "oneOf": [
+        {
+          "title": "AWS-compatible AssumeRoleWithWebIdentity provider",
+          "type": "object",
+          "required": [
+            "type",
+            "stsUrl",
+            "roleArn"
+          ],
+          "properties": {
+            "type": {
+              "const": "assumeRoleWithWebIdentity"
+            },
+            "subjectTokenType": {
+              "title": "OIDC ID token supplied to STS",
+              "type": "string",
+              "const": "urn:ietf:params:oauth:token-type:id_token",
+              "default": "urn:ietf:params:oauth:token-type:id_token",
+              "description": "If absent, use the token type fixed by this profile. Validation does not insert the default."
+            },
+            "stsUrl": {
+              "title": "AWS-compatible STS endpoint URL",
+              "type": "string",
+              "format": "uri"
+            },
+            "roleArn": {
+              "title": "Role identifier sent as the STS RoleArn parameter",
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": false,
+          "description": "Use AccessKeyId, SecretAccessKey, SessionToken, and Expiration from the STS AssumeRoleWithWebIdentityResult.Credentials response."
+        },
+        {
+          "title": "JWT access token used directly as the S3 session token",
+          "type": "object",
+          "required": [
+            "type",
+            "accessKeyId",
+            "secretAccessKey",
+            "scope"
+          ],
+          "properties": {
+            "type": {
+              "const": "jwtSessionToken"
+            },
+            "subjectTokenType": {
+              "title": "JWT access token supplied by the input scheme",
+              "type": "string",
+              "const": "urn:ietf:params:oauth:token-type:access_token",
+              "default": "urn:ietf:params:oauth:token-type:access_token",
+              "description": "If absent, use the token type fixed by this profile. Validation does not insert the default."
+            },
+            "accessKeyId": {
+              "title": "Fixed tenant identifier used as the S3 access key ID",
+              "type": "string",
+              "minLength": 1,
+              "description": "Literal tenant identifier copied to AccessKeyId."
+            },
+            "secretAccessKey": {
+              "title": "Tenant signing value used as the S3 secret access key",
+              "type": "string",
+              "minLength": 1,
+              "description": "Copied unchanged to SecretAccessKey. Can be the same tenant identifier as accessKeyId."
+            },
+            "scope": {
+              "title": "Space-separated OAuth scopes required for direct access; may be empty",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "description": "Use the configured tenant signing values and the input JWT access token as SessionToken."
         }
       ]
     },
