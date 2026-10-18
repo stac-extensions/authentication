@@ -1,0 +1,80 @@
+{
+  "type": "Collection",
+  "stac_version": "1.0.0",
+  "id": "collection-s3-sts-web-identity",
+  "title": "S3 access through STS AssumeRoleWithWebIdentity",
+  "description": "Get an OIDC ID token, exchange it at STS, and read an S3 asset with the returned temporary credentials.",
+  "license": "CC-BY-4.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/authentication/v1.2.0/schema.json",
+    "https://stac-extensions.github.io/storage/v2.0.0/schema.json"
+  ],
+  "auth:schemes": {
+    "oidc": {
+      "type": "openIdConnect",
+      "openIdConnectUrl": "https://identity.example.com/.well-known/openid-configuration"
+    },
+    "s3_sts": {
+      "type": "s3",
+      "description": "Exchange the ID token from oidc with AssumeRoleWithWebIdentity. Sign S3 requests with the returned access key, secret, and session token.",
+      "auth:refs": [
+        "oidc"
+      ],
+      "credentialProvider": {
+        "type": "assumeRoleWithWebIdentity",
+        "stsUrl": "https://credentials.example.com/sts",
+        "roleArn": "arn:aws:iam::123456789012:role/data-reader"
+      }
+    }
+  },
+  "storage:schemes": {
+    "object_storage": {
+      "type": "custom-s3",
+      "platform": "https://objects.example.com",
+      "bucket": "example-data",
+      "region": "us-east-1"
+    }
+  },
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          -180,
+          -90,
+          180,
+          90
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2026-01-01T00:00:00Z",
+          null
+        ]
+      ]
+    }
+  },
+  "links": [
+    {
+      "href": "https://catalog.example.com/collections/collection-s3-sts-web-identity",
+      "rel": "self",
+      "type": "application/json"
+    }
+  ],
+  "assets": {
+    "data": {
+      "href": "s3://example-data/cubes/example.zarr",
+      "type": "application/vnd+zarr",
+      "roles": [
+        "data"
+      ],
+      "storage:refs": [
+        "object_storage"
+      ],
+      "auth:refs": [
+        "s3_sts"
+      ]
+    }
+  }
+}
