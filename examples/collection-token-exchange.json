@@ -11,7 +11,8 @@
   "auth:schemes": {
     "oidc": {
       "type": "openIdConnect",
-      "openIdConnectUrl": "https://auth.example.com/.well-known/openid-configuration"
+      "openIdConnectUrl": "https://auth.example.com/.well-known/openid-configuration",
+      "clientId": "stac-browser"
     },
     "token_exchange": {
       "type": "oauth2",

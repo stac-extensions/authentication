@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `clientId` field (optional) on `openIdConnect` schemes: the public OAuth 2.0 client
+  identifier a client signs in with at the OpenID Connect provider
+
 ## [v1.2.0] - 2026-09-01
 
 ### Added
