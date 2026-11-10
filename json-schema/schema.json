@@ -354,6 +354,10 @@
               "openIdConnectUrl": {
                 "title": "This URL returns a JSON listing of the OpenID/OAuth endpoints, supported scopes and claims, public keys used to sign the tokens, and other details",
                 "type": "string"
+              },
+              "clientId": {
+                "title": "Public OAuth 2.0 client identifier to sign in with at the OpenID Connect provider",
+                "type": "string"
               }
             }
           },
